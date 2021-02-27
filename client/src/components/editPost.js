@@ -88,7 +88,6 @@ const EditPost = (props) => {
     setOpenDialog(false);
   };
 
-  console.log(formValues);
   return (
     <div style={{ padding: "20px" }}>
       {formValues && (
@@ -198,6 +197,7 @@ const EditPost = (props) => {
                   </Grid>
                   <br />
                   <Button
+                    style={{ marginRight: "15px" }}
                     variant="contained"
                     color="primary"
                     type="submit"
