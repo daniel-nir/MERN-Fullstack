@@ -24,6 +24,12 @@ const userSchema = new mongoose.Schema({
     maxlength: 1024,
   },
 
+  profile_image: {
+    type: String,
+    minlength: 8,
+    maxlength: 1024,
+  },
+
   favorites: [],
 
   createdAt: { type: Date, default: Date.now },
@@ -35,6 +41,8 @@ userSchema.methods.generateAuthToken = function () {
       _id: this._id,
       name: this.name,
       email: this.email,
+      favorites: this.favorites,
+      createdAt: this.createdAt,
     },
     keys.jwtKey
   );

@@ -47,51 +47,45 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const Post = ({ post, currentUser, props }) => {
+const Post = ({ post, currentUser }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const anchorRef = useRef(null);
-  const author = post._user;
   const [user, setUser] = useState({});
   const [likes, setLikes] = useState([]);
   const [isLiked, setIsLiked] = useState();
   const [isFavorite, setIsFavorite] = useState();
   const [isShown, setIsShown] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
-    const postId = post._id;
-    userService.getUserProfile(author).then(({ data }) => {
-      if (mounted) {
+    setIsMounted(true);
+    if (isMounted) {
+      const postId = post._id;
+      const author = post._user;
+      userService.getUserProfile(author).then(({ data }) => {
         setUser(data);
-      }
-    });
+      });
 
-    postService.getPost(postId).then(({ data }) => {
-      if (!currentUser || !post || !data) {
-        return;
-      }
-      if (mounted) {
+      postService.getPost(postId).then(({ data }) => {
+        if (!currentUser || !post || !data) {
+          return;
+        }
         const likesArray = data.postLikes;
         setIsLiked(likesArray.includes(currentUser._id));
-      }
-    });
-
-    if (!currentUser) {
-      return;
-    } else {
-      userService.getUserProfile(currentUser._id).then(({ data }) => {
-        if (mounted) {
+      });
+      if (currentUser) {
+        userService.getUserProfile(currentUser._id).then(({ data }) => {
           const favArray = data.favorites;
           setIsFavorite(favArray.includes(post._id));
-        }
-      });
+        });
+      }
     }
     return () => {
-      mounted = false;
+      setIsMounted(false);
     };
-  }, [author, currentUser, post]);
+  }, [currentUser, isMounted, post, post._id, post._user, post.postLikes]);
 
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
@@ -143,9 +137,7 @@ const Post = ({ post, currentUser, props }) => {
     const postId = post._id;
     await postService.unlikePost(postId).then(({ data }) => {
       setIsLiked(false);
-      if (data.postLikes.length === 0) {
-        window.location.reload();
-      } else setLikes(data.postLikes);
+      setLikes(data.postLikes);
     });
   };
 
@@ -291,7 +283,7 @@ const Post = ({ post, currentUser, props }) => {
                           }}
                         >
                           <Link
-                            to="#"
+                            to={`/search?q=${postTag}`}
                             style={{ textDecoration: "none", color: "#fff" }}
                           >
                             #{postTag}
@@ -319,8 +311,9 @@ const Post = ({ post, currentUser, props }) => {
                       >
                         {user.name}
                       </Link>
+
                       <Moment
-                        style={{ float: "right", margin: "0px 5px 0px 0px " }}
+                        style={{ float: "right", margin: "0px 15px 0px 0px " }}
                         fromNow
                       >
                         {post.createdAt}

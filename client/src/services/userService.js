@@ -20,10 +20,6 @@ export function getCurrentUser() {
   }
 }
 
-export function getUserName(userId) {
-  return http.get(`/api/user/${userId}/user`);
-}
-
 export function getUsers() {
   return http.get(`/api/user/users`);
 }
@@ -66,7 +62,6 @@ export default {
   getCurrentUser,
   getJwt,
   getUsers,
-  getUserName,
   getMyProfile,
   getUserProfile,
   setUser,

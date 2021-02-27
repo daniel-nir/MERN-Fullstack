@@ -24,6 +24,13 @@ router.get("/:id/user-posts", async (req, res) => {
   res.send(posts);
 });
 
+router.get("/search/:q", async (req, res) => {
+  const posts = await Post.find({
+    postTags: { $regex: req.params.q, $options: "i" },
+  }).sort({ _id: -1 });
+  res.send(posts);
+});
+
 router.delete("/:id", auth, async (req, res) => {
   const post = await Post.findOneAndRemove({
     _id: req.params.id,

@@ -40,6 +40,10 @@ export function getAllPosts() {
   return http.get("/api/posts/posts");
 }
 
+export function getSearched(q) {
+  return http.get(`/api/posts/search/${q}`);
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   createPost,
@@ -52,4 +56,5 @@ export default {
   unlikePost,
   getPost,
   getUserPosts,
+  getSearched,
 };

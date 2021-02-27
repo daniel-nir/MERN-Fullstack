@@ -16,6 +16,7 @@ import UserProfile from "./userProfile";
 import EditPost from "./editPost";
 import DeletePost from "./deletePost";
 import EditUser from "./editUser";
+import Search from "./search";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");
@@ -26,7 +27,7 @@ const App = () => {
     setCurrentUser(user);
     if (!user) return;
     else
-      userService.getMyProfile().then(({ data }) => {
+      userService.getUserProfile(user._id).then(({ data }) => {
         if (!data) {
           return;
         } else setUserUpdated(data);
@@ -46,6 +47,7 @@ const App = () => {
             minHeight: "86vh",
             marginTop: "55px",
             overflow: "hidden",
+            backgroundColor: "#fafafa",
           }}
         >
           <Switch>
@@ -66,6 +68,7 @@ const App = () => {
             />
 
             <ProtectedRoute exact path="/create-post" component={CreatePost} />
+            <Route exact path="/search" component={Search} />
             <Route exact path="/user-profile/:id" component={UserProfile} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/logout" component={Logout} />

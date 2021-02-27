@@ -49,7 +49,7 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "#fafafa",
     marginTop: "70px",
   },
 }));
@@ -62,7 +62,7 @@ const StyledTabs = withStyles({
     "& > span": {
       maxWidth: 40,
       width: "100%",
-      backgroundColor: "#635ee7",
+      backgroundColor: "#1d262d",
     },
   },
 })((props) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />);
@@ -70,46 +70,55 @@ const StyledTabs = withStyles({
 const UserProfile = (props) => {
   const [userPosts, setUserPosts] = useState([]);
   const [favPosts, setFavPosts] = useState([]);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState("");
   const [currentUser, setCurrentUser] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [totalLikes, setTotalLikes] = useState([]);
+  const [isMounted, setIsMounted] = useState(false);
+  const loggedIn = userService.getCurrentUser();
 
   useEffect(() => {
-    const data = userService.getCurrentUser();
-    if (data) {
-      userService.getMyProfile().then(({ data }) => {
-        setCurrentUser(data);
-      });
-    }
-    const userId = props.match.params.id;
-    userService
-      .getUserProfile(userId)
-      .then(({ data }) => {
-        setUser(data);
-      })
-      .catch((err) => {
-        if (err) {
-          console.log(err);
-        } else return;
-      });
+    setIsMounted(true);
+    if (isMounted) {
+      setValue(0);
+      if (loggedIn) {
+        userService.getMyProfile().then(({ data }) => {
+          if (data) {
+            setCurrentUser(data);
+          }
+        });
+      }
+      const userId = props.match.params.id;
+      userService
+        .getUserProfile(userId)
+        .then(({ data }) => {
+          if (!data) return;
+          setUser(data);
+        })
+        .catch((err) => {
+          if (err) {
+            console.log(err);
+          } else return;
+        });
 
-    postService
-      .getUserPosts(userId)
-      .then(({ data }) => {
-        if (!data) return;
-        setUserPosts(data);
-        const likesArrays = data.map((post) => post.postLikes);
-        const likesMerged = [].concat.apply([], likesArrays);
-        setTotalLikes(likesMerged);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        if (err) {
-          console.log(err);
-        } else return;
-      });
-  }, [props.match.params.id]);
+      postService
+        .getUserPosts(userId)
+        .then(({ data }) => {
+          if (!data) return;
+          setUserPosts(data);
+          const likesArrays = data.map((post) => post.postLikes);
+          const likesMerged = [].concat.apply([], likesArrays);
+          setTotalLikes(likesMerged);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          if (err) {
+            console.log(err);
+          } else return;
+        });
+    }
+    return () => setIsMounted(false);
+  }, [isMounted, loggedIn, props.match.params.id]);
 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -118,19 +127,31 @@ const UserProfile = (props) => {
   };
 
   const handleGetSaved = async () => {
-    const userId = props.match.params.id;
-    if (!currentUser) return;
-    else
+    if (currentUser) {
+      setIsLoading(true);
+      const userId = props.match.params.id;
       await userService.getUserProfile(userId).then(({ data }) => {
         if (data.favorites.length === 0) {
           setFavPosts([]);
+          setIsLoading(false);
           return;
         } else {
           userService.getFavorites(data.favorites).then(({ data }) => {
             setFavPosts(data);
+            setIsLoading(false);
           });
         }
       });
+    }
+  };
+  const handleGetPosts = async () => {
+    setIsLoading(true);
+    const userId = props.match.params.id;
+
+    postService.getUserPosts(userId).then(({ data }) => {
+      setUserPosts(data);
+      setIsLoading(false);
+    });
   };
 
   return (
@@ -163,29 +184,36 @@ const UserProfile = (props) => {
         }
       />
 
-      {currentUser._id === user._id && (
-        <div style={{ textAlign: "right", paddingRight: "30px" }}>
-          <IconButton>
-            <SettingsIcon fontSize="small" />
-          </IconButton>
-          <Link
-            style={{
-              textDecoration: "none",
-            }}
-            to="/user-profile/edit"
-          >
-            <Button>edit user</Button>
-          </Link>
-        </div>
-      )}
+      {loggedIn
+        ? loggedIn._id === user._id && (
+            <div style={{ textAlign: "right", paddingRight: "30px" }}>
+              <IconButton>
+                <SettingsIcon fontSize="small" />
+              </IconButton>
+              <Link
+                style={{
+                  textDecoration: "none",
+                }}
+                to="/user-profile/edit"
+              >
+                <Button>edit user</Button>
+              </Link>
+            </div>
+          )
+        : null}
 
-      <Grid className={classes.root}>
+      <Grid className={classes.root} style={{ backgroundColor: "#fafafa" }}>
         <StyledTabs value={value} onChange={handleChange} centered>
-          <Tab disableRipple={true} label={"posts"} {...a11yProps(0)} />
+          <Tab
+            disableRipple={true}
+            label={"posts"}
+            {...a11yProps(0)}
+            onClick={handleGetPosts}
+          />
           <Tab
             disableRipple={true}
             label={
-              !currentUser ? (
+              !loggedIn ? (
                 <>
                   <div>
                     <LockIcon
@@ -218,7 +246,7 @@ const UserProfile = (props) => {
               color="#00BFFF"
               height={200}
               width={50}
-              timeout={1000}
+              timeout={1500}
             />
           ) : (
             <Posts currentUser={currentUser} posts={userPosts} />
@@ -237,7 +265,7 @@ const UserProfile = (props) => {
               color="#00BFFF"
               height={200}
               width={50}
-              timeout={1000}
+              timeout={1500}
             />
           ) : (
             <>
@@ -245,7 +273,7 @@ const UserProfile = (props) => {
                 <Posts currentUser={currentUser} posts={favPosts} />
               ) : (
                 <Typography style={{ textAlign: "center" }}>
-                  this users saved posts are private and are currently hidden
+                  This users saved posts are private and are currently hidden.
                 </Typography>
               )}
             </>

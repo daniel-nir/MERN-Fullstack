@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTheme } from "@material-ui/core/styles";
+import { fade, makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -22,11 +23,81 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
+import SearchBar from "./searchBar";
 
-const Navbar = ({ currentUser, userUpdated, window }) => {
+const useStyles = makeStyles((theme) => ({
+  xs_down: {
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
+  },
+  xs_up: {
+    [theme.breakpoints.up("xs")]: {
+      display: "none",
+    },
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  search: {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    margin: "0 15px!important",
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "300px",
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputRoot: {
+    color: "inherit",
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "12ch",
+      "&:focus": {
+        width: "20ch",
+      },
+    },
+  },
+}));
+
+const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
+  const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [isShown, setIsShown] = React.useState(false);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    if (isMounted) {
+      const params = new URLSearchParams(location.search);
+
+      const q = params.get("q");
+      setIsShown(q === "" || q);
+    }
+
+    return () => setIsMounted(false);
+  }, [isMounted, location.search]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -36,6 +107,12 @@ const Navbar = ({ currentUser, userUpdated, window }) => {
     <div style={{ width: 240 }} onClick={() => setMobileOpen(false)}>
       {currentUser ? (
         <List>
+          <ListItem button key="3">
+            <ListItemText
+              style={{ margin: "0px 45px" }}
+              primary={<AddPostBtn />}
+            />
+          </ListItem>
           <NavLink
             style={{ textDecoration: "none", color: "#1976d2" }}
             to={`/user-profile/${currentUser._id}`}
@@ -61,6 +138,12 @@ const Navbar = ({ currentUser, userUpdated, window }) => {
         </List>
       ) : (
         <List>
+          <ListItem button key="3">
+            <ListItemText
+              style={{ margin: "0px 45px" }}
+              primary={<AddPostBtn />}
+            />
+          </ListItem>
           <NavLink
             style={{ textDecoration: "none", color: "#1976d2" }}
             to="/login"
@@ -95,37 +178,47 @@ const Navbar = ({ currentUser, userUpdated, window }) => {
     <div>
       <AppBar
         elevation={0}
-        position="fixed"
+        position="absolute"
         style={{ backgroundColor: "#1976d2" }}
       >
         <Toolbar>
           <NavLink style={{ textDecoration: "none", color: "white" }} to="/">
             <img height="35px" src={"/images/logo3_white.png"} alt="logo" />
           </NavLink>
-          <Typography variant="h6">
-            <NavLink
-              style={{
-                textDecoration: "none",
-                color: "white",
-                marginLeft: "5px",
-              }}
-              to="/"
-            >
-              PIXA UNIVERSE
-            </NavLink>
-          </Typography>
-          {isMobile ? null : (
-            <>
-              <div style={{ flexGrow: "1" }} />
-            </>
+
+          {isMobile && isShown ? null : (
+            <Typography variant="h6">
+              <NavLink
+                style={{
+                  textDecoration: "none",
+                  color: "white",
+                  marginLeft: "5px",
+                  whiteSpace: "nowrap",
+                }}
+                to="/"
+              >
+                Pixa Verse
+              </NavLink>
+            </Typography>
           )}
 
+          {isShown ? (
+            <SearchBar history={history} location={location} window={window} />
+          ) : null}
+
+          <div className={classes.grow} />
+          <div
+            className={classes.xs_down}
+            style={{
+              float: "left",
+              marginRight: "5px",
+              marginTop: "1px",
+            }}
+          >
+            <AddPostBtn />
+          </div>
           {isMobile ? (
             <>
-              <div style={{ flexGrow: "1" }} />
-              <div style={{ marginRight: "5px" }}>
-                <AddPostBtn />
-              </div>
               <IconButton
                 edge="end"
                 color="inherit"
@@ -156,15 +249,6 @@ const Navbar = ({ currentUser, userUpdated, window }) => {
             <div>
               {currentUser && (
                 <div>
-                  <div
-                    style={{
-                      float: "left",
-                      marginRight: "5px",
-                      marginTop: "1px",
-                    }}
-                  >
-                    <AddPostBtn />
-                  </div>
                   <NavLink
                     style={{ textDecoration: "none", color: "white" }}
                     to={`/user-profile/${currentUser._id}`}
@@ -189,16 +273,6 @@ const Navbar = ({ currentUser, userUpdated, window }) => {
 
               {!currentUser && (
                 <div>
-                  <div
-                    style={{
-                      float: "left",
-                      marginRight: "5px",
-                      marginTop: "1px",
-                    }}
-                  >
-                    <AddPostBtn />
-                  </div>
-
                   <NavLink
                     style={{ textDecoration: "none", color: "white" }}
                     to="/login"
