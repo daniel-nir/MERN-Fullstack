@@ -16,6 +16,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { withRouter } from "react-router-dom";
 import AddPostBtn from "./addPostBtn";
 import {
+  Container,
   Drawer,
   Hidden,
   List,
@@ -181,122 +182,128 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
         position="absolute"
         style={{ backgroundColor: "#1976d2" }}
       >
-        <Toolbar>
-          <NavLink style={{ textDecoration: "none", color: "white" }} to="/">
-            <img height="35px" src={"/images/logo3_white.png"} alt="logo" />
-          </NavLink>
+        <Container disableGutters maxWidth="xl">
+          <Toolbar>
+            <NavLink style={{ textDecoration: "none", color: "white" }} to="/">
+              <img height="35px" src={"/images/logo3_white.png"} alt="logo" />
+            </NavLink>
 
-          {isMobile && isShown ? null : (
-            <Typography variant="h6">
-              <NavLink
-                style={{
-                  textDecoration: "none",
-                  color: "white",
-                  marginLeft: "5px",
-                  whiteSpace: "nowrap",
-                }}
-                to="/"
-              >
-                Pixa Verse
-              </NavLink>
-            </Typography>
-          )}
+            {isMobile && isShown ? null : (
+              <Typography variant="h6">
+                <NavLink
+                  style={{
+                    textDecoration: "none",
+                    color: "white",
+                    marginLeft: "5px",
+                    whiteSpace: "nowrap",
+                  }}
+                  to="/"
+                >
+                  Pixa Verse
+                </NavLink>
+              </Typography>
+            )}
 
-          {isShown ? (
-            <SearchBar history={history} location={location} window={window} />
-          ) : null}
+            {isShown ? (
+              <SearchBar
+                history={history}
+                location={location}
+                window={window}
+              />
+            ) : null}
 
-          <div className={classes.grow} />
-          <div
-            className={classes.xs_down}
-            style={{
-              float: "left",
-              marginRight: "5px",
-              marginTop: "1px",
-            }}
-          >
-            <AddPostBtn />
-          </div>
-          {isMobile ? (
-            <>
-              <IconButton
-                edge="end"
-                color="inherit"
-                aria-label="menu"
-                onClick={handleDrawerToggle}
-              >
-                <MenuIcon />
-              </IconButton>
-
-              <nav aria-label="mailbox folders">
-                <Hidden>
-                  <Drawer
-                    container={container}
-                    variant="temporary"
-                    anchor="right"
-                    open={mobileOpen}
-                    onClose={handleDrawerToggle}
-                    ModalProps={{
-                      keepMounted: true,
-                    }}
-                  >
-                    {drawer}
-                  </Drawer>
-                </Hidden>
-              </nav>
-            </>
-          ) : (
-            <div>
-              {currentUser && (
-                <div>
-                  <NavLink
-                    style={{ textDecoration: "none", color: "white" }}
-                    to={`/user-profile/${currentUser._id}`}
-                  >
-                    <Button color="inherit">
-                      <PersonIcon />
-                      hi, {userUpdated.name || currentUser.name}
-                    </Button>
-                  </NavLink>
-
-                  <NavLink
-                    style={{ textDecoration: "none", color: "white" }}
-                    to="/logout"
-                  >
-                    <Button color="inherit">
-                      <MeetingRoomIcon />
-                      logout
-                    </Button>
-                  </NavLink>
-                </div>
-              )}
-
-              {!currentUser && (
-                <div>
-                  <NavLink
-                    style={{ textDecoration: "none", color: "white" }}
-                    to="/login"
-                  >
-                    <Button color="inherit">
-                      <ExitToAppIcon style={{ marginRight: "2px" }} />
-                      login
-                    </Button>
-                  </NavLink>
-
-                  <NavLink
-                    style={{ textDecoration: "none", color: "white" }}
-                    to="/signup"
-                  >
-                    <Button color="inherit">
-                      <PersonAddIcon style={{ marginRight: "2px" }} />
-                      sign up
-                    </Button>
-                  </NavLink>
-                </div>
-              )}
+            <div className={classes.grow} />
+            <div
+              className={classes.xs_down}
+              style={{
+                float: "left",
+                marginRight: "5px",
+                marginTop: "1px",
+              }}
+            >
+              <AddPostBtn />
             </div>
-          )}
-        </Toolbar>
+            {isMobile ? (
+              <>
+                <IconButton
+                  edge="end"
+                  color="inherit"
+                  aria-label="menu"
+                  onClick={handleDrawerToggle}
+                >
+                  <MenuIcon />
+                </IconButton>
+
+                <nav aria-label="mailbox folders">
+                  <Hidden>
+                    <Drawer
+                      container={container}
+                      variant="temporary"
+                      anchor="right"
+                      open={mobileOpen}
+                      onClose={handleDrawerToggle}
+                      ModalProps={{
+                        keepMounted: true,
+                      }}
+                    >
+                      {drawer}
+                    </Drawer>
+                  </Hidden>
+                </nav>
+              </>
+            ) : (
+              <div>
+                {currentUser && (
+                  <div>
+                    <NavLink
+                      style={{ textDecoration: "none", color: "white" }}
+                      to={`/user-profile/${currentUser._id}`}
+                    >
+                      <Button color="inherit">
+                        <PersonIcon />
+                        hi, {userUpdated.name || currentUser.name}
+                      </Button>
+                    </NavLink>
+
+                    <NavLink
+                      style={{ textDecoration: "none", color: "white" }}
+                      to="/logout"
+                    >
+                      <Button color="inherit">
+                        <MeetingRoomIcon />
+                        logout
+                      </Button>
+                    </NavLink>
+                  </div>
+                )}
+
+                {!currentUser && (
+                  <div>
+                    <NavLink
+                      style={{ textDecoration: "none", color: "white" }}
+                      to="/login"
+                    >
+                      <Button color="inherit">
+                        <ExitToAppIcon style={{ marginRight: "2px" }} />
+                        login
+                      </Button>
+                    </NavLink>
+
+                    <NavLink
+                      style={{ textDecoration: "none", color: "white" }}
+                      to="/signup"
+                    >
+                      <Button color="inherit">
+                        <PersonAddIcon style={{ marginRight: "2px" }} />
+                        sign up
+                      </Button>
+                    </NavLink>
+                  </div>
+                )}
+              </div>
+            )}
+          </Toolbar>
+        </Container>
       </AppBar>
     </div>
   );

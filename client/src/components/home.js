@@ -7,7 +7,7 @@ import Posts from "./posts";
 import postService from "../services/postService";
 import userService from "../services/userService";
 import Loader from "react-loader-spinner";
-import { Grid, Typography } from "@material-ui/core";
+import { Container, Grid, Typography } from "@material-ui/core";
 import SearchInput from "./searchInput.";
 
 const Home = ({ location, history }) => {
@@ -87,7 +87,9 @@ const Home = ({ location, history }) => {
             timeout={1000}
           />
         ) : (
-          <Posts currentUser={currentUser} posts={posts} />
+          <Container disableGutters maxWidth="xl">
+            <Posts currentUser={currentUser} posts={posts} />
+          </Container>
         )}
       </div>
     </div>

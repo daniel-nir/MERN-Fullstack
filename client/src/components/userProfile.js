@@ -11,7 +11,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import Posts from "./posts";
 import userService from "../services/userService";
 import postService from "../services/postService";
-import { IconButton, Typography } from "@material-ui/core";
+import { Container, IconButton, Typography } from "@material-ui/core";
 import Loader from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: "#fafafa",
-    marginTop: "70px",
+    marginTop: "25px",
   },
 }));
 
@@ -74,51 +74,50 @@ const UserProfile = (props) => {
   const [currentUser, setCurrentUser] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [totalLikes, setTotalLikes] = useState([]);
-  const [isMounted, setIsMounted] = useState(false);
-  const loggedIn = userService.getCurrentUser();
+  const [loggedIn, setLoggedIn] = useState("");
 
   useEffect(() => {
-    setIsMounted(true);
-    if (isMounted) {
-      setValue(0);
-      if (loggedIn) {
-        userService.getMyProfile().then(({ data }) => {
-          if (data) {
-            setCurrentUser(data);
-          }
-        });
-      }
-      const userId = props.match.params.id;
-      userService
-        .getUserProfile(userId)
-        .then(({ data }) => {
-          if (!data) return;
-          setUser(data);
-        })
-        .catch((err) => {
-          if (err) {
-            console.log(err);
-          } else return;
-        });
+    const data = userService.getCurrentUser();
+    setLoggedIn(data);
+    setValue(0);
 
-      postService
-        .getUserPosts(userId)
-        .then(({ data }) => {
-          if (!data) return;
-          setUserPosts(data);
-          const likesArrays = data.map((post) => post.postLikes);
-          const likesMerged = [].concat.apply([], likesArrays);
-          setTotalLikes(likesMerged);
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          if (err) {
-            console.log(err);
-          } else return;
-        });
-    }
-    return () => setIsMounted(false);
-  }, [isMounted, loggedIn, props.match.params.id]);
+    userService.getMyProfile().then(({ data }) => {
+      if (data) {
+        setCurrentUser(data);
+      }
+    });
+
+    const userId = props.match.params.id;
+    userService
+      .getUserProfile(userId)
+      .then(({ data }) => {
+        if (!data) return;
+        setUser(data);
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(err);
+        } else return;
+      });
+
+    postService
+      .getUserPosts(userId)
+      .then(({ data }) => {
+        if (!data) return;
+        setUserPosts(data);
+        const likesArrays = data.map((post) => post.postLikes);
+        const likesMerged = [].concat.apply([], likesArrays);
+        setTotalLikes(likesMerged);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(err);
+        } else return;
+      });
+
+    //eslint-disable-next-line
+  }, []);
 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -155,7 +154,7 @@ const UserProfile = (props) => {
   };
 
   return (
-    <div style={{ padding: "15px" }}>
+    <Container disableGutters maxWidth="xl">
       <PageHeader
         title={user.name}
         sub={
@@ -280,7 +279,7 @@ const UserProfile = (props) => {
           )}
         </TabPanel>
       </Grid>
-    </div>
+    </Container>
   );
 };
 

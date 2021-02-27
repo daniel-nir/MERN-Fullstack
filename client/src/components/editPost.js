@@ -210,7 +210,7 @@ const EditPost = (props) => {
               </Grid>
               <Button
                 onClick={handleClickOpen}
-                style={{ marginTop: "80px", textAlign: "left" }}
+                style={{ marginTop: "80px", textAlign: "center" }}
                 color="secondary"
                 variant="outlined"
               >
