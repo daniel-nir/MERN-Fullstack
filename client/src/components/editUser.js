@@ -3,7 +3,6 @@ import Form from "./form/form";
 import PageHeader from "./pageHeader";
 import Joi from "joi-browser";
 import userService from "../services/userService";
-import { Button } from "@material-ui/core";
 
 class EditUser extends Form {
   state = {
@@ -56,15 +55,10 @@ class EditUser extends Form {
     window.location.reload();
   }
 
-  handleCancel = () => {
-    const { data } = this.state;
-    this.props.history.replace(`/user-profile/${data._id}`);
-  };
-
   render() {
     return (
       <div>
-        <PageHeader title="user info" />
+        <PageHeader title="Personal info" />
 
         <form
           align="center"
@@ -75,8 +69,7 @@ class EditUser extends Form {
           {this.renderInput("name", "Name")}
           {this.renderInput("email", "Email")}
 
-          {this.renderButton("Update Profile")}
-          <Button onClick={this.handleCancel}>Cancel</Button>
+          {this.renderButton("Save")}
         </form>
       </div>
     );

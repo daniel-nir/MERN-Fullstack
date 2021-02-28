@@ -48,18 +48,13 @@ const Home = ({ location, history }) => {
           backgroundImage: "url(/images/hill-5260303_1920.jpg)",
           backgroundPosition: "top",
           backgroundSize: "cover",
-          padding: "125px 15px 175px 15px",
+          padding: "100px 15px 150px 15px",
         }}
       >
-        <Grid
-          style={{ marginTop: "20px" }}
-          align="center"
-          container
-          spacing={1}
-        >
+        <Grid align="center" container spacing={1}>
           <Grid item xs={12}>
             <Typography
-              style={{ fontSize: "40px", color: "white" }}
+              style={{ fontSize: "40px", color: "white", marginTop: "10px" }}
               variant="h3"
             >
               Pixa Verse

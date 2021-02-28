@@ -80,12 +80,13 @@ const UserProfile = (props) => {
     const data = userService.getCurrentUser();
     setLoggedIn(data);
     setValue(0);
-
-    userService.getMyProfile().then(({ data }) => {
-      if (data) {
-        setCurrentUser(data);
-      }
-    });
+    if (data) {
+      userService.getMyProfile().then(({ data }) => {
+        if (data) {
+          setCurrentUser(data);
+        }
+      });
+    }
 
     const userId = props.match.params.id;
     userService

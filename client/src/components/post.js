@@ -255,6 +255,7 @@ const Post = ({ post, currentUser }) => {
                           )}
                         </>
                       ) : (
+                        //!currentUser
                         <Link style={{ textDecoration: "none" }} to="/login">
                           <IconButton
                             disableRipple
@@ -263,7 +264,7 @@ const Post = ({ post, currentUser }) => {
                           >
                             <FavoriteBorderIcon />
                             <Typography variant="button">
-                              {likes.length || post.postLikes.length || null}
+                              {likes.length || post.postLikes.length}
                             </Typography>
                           </IconButton>
                           <IconButton
