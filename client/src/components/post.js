@@ -11,6 +11,7 @@ import {
   ClickAwayListener,
   Button,
   GridList,
+  Fade,
 } from "@material-ui/core";
 import React, { useEffect, useState, useRef } from "react";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -47,7 +48,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-const Post = ({ post, currentUser }) => {
+const Post = ({ post, currentUser, history }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -162,12 +163,10 @@ const Post = ({ post, currentUser }) => {
 
   return (
     <div className={classes.root}>
-      <GridList cellHeight={300} style={{ maxWidth: 450 }}>
+      <GridList cellHeight={280} style={{ maxWidth: 500, padding: "0 1px " }}>
         <GridListTile
           style={{
-            flex: "33%",
-            transform: "translateZ(0)",
-            listStyle: "none",
+            flex: "25%",
           }}
           onMouseEnter={() => setIsShown(true)}
           onMouseLeave={handleLeaveListTile}
@@ -178,11 +177,10 @@ const Post = ({ post, currentUser }) => {
           />
           {isShown && (
             <>
-              <Slide direction="up" in={true}>
+              <Fade in={true}>
                 <GridListTileBar
                   style={{
                     paddingTop: "15px",
-                    bottom: "-5px",
                     background:
                       "linear-gradient(to top, rgba(0,0,0,0.7) 0%, " +
                       "rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 100%)",
@@ -276,7 +274,7 @@ const Post = ({ post, currentUser }) => {
                           </IconButton>
                         </Link>
                       )}
-                      {post.postTags.map((postTag, index) => (
+                      {post.postTags.slice(0, 2).map((postTag, index) => (
                         <span
                           key={index}
                           style={{
@@ -295,11 +293,12 @@ const Post = ({ post, currentUser }) => {
                   }
                   actionPosition="left"
                 />
-              </Slide>
-              <Slide direction="down" in={true}>
+              </Fade>
+
+              <Fade in={true}>
                 <GridListTileBar
                   style={{
-                    top: "-10px",
+                    top: "-5px",
                     background:
                       "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
                       "rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 100%)",
@@ -346,7 +345,7 @@ const Post = ({ post, currentUser }) => {
                     </>
                   }
                 />
-              </Slide>
+              </Fade>
 
               <Popper
                 open={open}

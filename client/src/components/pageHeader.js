@@ -6,10 +6,7 @@ const PageTitle = ({ title, sub }) => {
   return (
     <Grid style={{ marginTop: "100px" }} align="center" container spacing={1}>
       <Grid item xs={12}>
-        <Typography
-          style={{ fontSize: "40px", textTransform: "capitalize" }}
-          variant="h3"
-        >
+        <Typography style={{ fontSize: "40px" }} variant="h3">
           {title}
         </Typography>
       </Grid>

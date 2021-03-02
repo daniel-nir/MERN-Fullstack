@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import Paper from "@material-ui/core/Paper";
-// import InputBase from "@material-ui/core/InputBase";
-// import IconButton from "@material-ui/core/IconButton";
-// import SearchIcon from "@material-ui/icons/Search";
 import Posts from "./posts";
 import postService from "../services/postService";
 import userService from "../services/userService";
@@ -14,10 +10,12 @@ const Home = ({ location, history }) => {
   const [posts, setPosts] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+  // const [backgroundImage, setBackgroundImage] = useState("");
 
   useEffect(() => {
-    let mounted = true;
-    if (mounted) {
+    setIsMounted(true);
+    if (isMounted) {
       const LoggedInUser = userService.getCurrentUser();
       if (LoggedInUser) {
         userService.getMyProfile().then(({ data }) => {
@@ -31,47 +29,67 @@ const Home = ({ location, history }) => {
         if (!data) {
           return;
         }
+        // random object from the data array
+        // const random = Math.floor(Math.random() * data.length);
+        // console.log(data[random].postImage);
+        // setBackgroundImage(data[random].postImage);
         setPosts(data);
         setIsLoading(false);
       });
     }
 
-    return () => {
-      mounted = false;
-    };
-  }, []);
+    return () => setIsMounted(false);
+  }, [isMounted]);
 
   return (
     <div style={{ paddingBottom: "20px" }}>
-      <div
+      <Container
+        maxWidth="xl"
         style={{
-          backgroundImage: "url(/images/hill-5260303_1920.jpg)",
-          backgroundPosition: "top",
+          // backgroundImage: `url(http://localhost:3900/${backgroundImage})`,
+          backgroundImage: `url(/images/snowPeak.jpg)`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
           backgroundSize: "cover",
-          padding: "100px 15px 150px 15px",
+          padding: "180px 15px",
         }}
       >
-        <Grid align="center" container spacing={1}>
+        <Grid align="center" container>
           <Grid item xs={12}>
             <Typography
-              style={{ fontSize: "40px", color: "white", marginTop: "10px" }}
-              variant="h3"
+              style={{
+                fontSmooth: "auto",
+                fontSize: "48px",
+                color: "white",
+                marginBottom: "10px",
+                fontWeight: 600,
+              }}
+              variant="h1"
             >
-              Pixa Verse
+              pixaplace
             </Typography>
-          </Grid>
-          <Grid item xs={12}>
             <Typography
-              style={{ fontSize: "25px", color: "white" }}
-              variant="h3"
+              style={{
+                fontSmooth: "auto",
+                fontSize: "20px",
+                color: "white",
+              }}
             >
-              Get, upload and share your favorite images
+              Photos for and by the people. sign up to share yours!
             </Typography>
           </Grid>
         </Grid>
         <SearchInput location={location} history={history} posts={posts} />
-      </div>
-      <div style={{ margin: "30px 15px 0px 15px" }}>
+        <Grid align="center" container>
+          <Grid item xs={12}>
+            <Typography style={{ margin: "25px", color: "white" }}>
+              example app
+            </Typography>
+          </Grid>
+        </Grid>
+      </Container>
+
+      <div style={{ margin: "15px 0px" }}>
         {isLoading ? (
           <Loader
             style={{ textAlign: "center" }}
@@ -82,7 +100,7 @@ const Home = ({ location, history }) => {
             timeout={1000}
           />
         ) : (
-          <Container disableGutters maxWidth="xl">
+          <Container maxWidth="lg" style={{ marginTop: "40px" }}>
             <Posts currentUser={currentUser} posts={posts} />
           </Container>
         )}

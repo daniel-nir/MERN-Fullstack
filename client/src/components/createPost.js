@@ -100,7 +100,7 @@ const CreatePost = (props) => {
           isSubmitting,
         }) => (
           <div>
-            <PageHeader title="create a new post" />
+            <PageHeader title="Upload a new photo" />
             <Grid container justify="center">
               <Form
                 encType="multipart/form-data"
@@ -114,7 +114,7 @@ const CreatePost = (props) => {
                     htmlFor="postText"
                     variant="outlined"
                     name="postText"
-                    label="post text"
+                    label="text"
                     type="text"
                     value={values.postText}
                     onChange={handleChange}

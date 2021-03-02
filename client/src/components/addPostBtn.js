@@ -1,7 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
-import Fab from "@material-ui/core/Fab";
 import { NavLink } from "react-router-dom";
 import PublishIcon from "@material-ui/icons/Publish";
 const useStyles = makeStyles((theme) => ({
@@ -19,15 +18,15 @@ export default function AddPostBtn() {
   return (
     <div>
       <NavLink style={{ textDecoration: "none" }} to="/create-post">
-        <Fab
+        <Button
           className={classes.fabGreen}
-          variant="extended"
+          variant="text"
           aria-label="add"
-          size="small"
+          size="medium"
         >
           <PublishIcon />
           upload
-        </Fab>
+        </Button>
       </NavLink>
     </div>
   );

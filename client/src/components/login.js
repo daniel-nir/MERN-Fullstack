@@ -42,10 +42,7 @@ class Login extends Form {
   render() {
     return (
       <div>
-        <PageHeader
-          title="Login with your information"
-          sub="hop on and join the party"
-        />
+        <PageHeader title="Login" sub="hop on and join the party" />
         <form
           align="center"
           style={{ marginTop: "50px" }}

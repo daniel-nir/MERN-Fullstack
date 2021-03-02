@@ -18,16 +18,14 @@ const useStyles = makeStyles((theme) => ({
   },
   search: {
     position: "relative",
+    color: "#555",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: fade(theme.palette.common.black, 0.05),
     "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: fade(theme.palette.common.black, 0.06),
     },
-    margin: "0 15px!important",
+    margin: "0  20px !important",
     width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "300px",
-    },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -40,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   inputRoot: {
     color: "inherit",
+    width: "100%",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -47,12 +46,6 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
   },
 }));
 
@@ -63,7 +56,7 @@ const SearchBar = (props) => {
 
   useEffect(() => {
     setIsMounted(true);
-    if (isMounted === true) {
+    if (isMounted) {
       const params = new URLSearchParams(props.location.search);
       const q = params.get("q");
       setInput(q ? q : "");

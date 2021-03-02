@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useTheme } from "@material-ui/core/styles";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -9,7 +9,7 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
+import HomeIcon from "@material-ui/icons/Home";
 import PersonIcon from "@material-ui/icons/Person";
 import { NavLink } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -27,6 +27,10 @@ import {
 import SearchBar from "./searchBar";
 
 const useStyles = makeStyles((theme) => ({
+  paper: {
+    background: "#fff",
+  },
+
   xs_down: {
     [theme.breakpoints.down("xs")]: {
       display: "none",
@@ -39,44 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
   grow: {
     flexGrow: 1,
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    margin: "0 15px!important",
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "300px",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
   },
 }));
 
@@ -91,83 +57,129 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
   useEffect(() => {
     setIsMounted(true);
     if (isMounted) {
-      const params = new URLSearchParams(location.search);
-
-      const q = params.get("q");
-      setIsShown(q === "" || q);
+      setIsShown(
+        location.pathname !== "/" &&
+          location.pathname !== "/signup" &&
+          location.pathname !== "/login"
+      );
     }
 
     return () => setIsMounted(false);
-  }, [isMounted, location.search]);
+  }, [isMounted, location.pathname]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const drawer = (
-    <div style={{ width: 240 }} onClick={() => setMobileOpen(false)}>
+    <div
+      className={classes.paper}
+      style={{
+        width: 240,
+        height: "100vh",
+        textTransform: "capitalize",
+      }}
+      onClick={() => setMobileOpen(false)}
+    >
       {currentUser ? (
-        <List>
-          <ListItem button key="3">
-            <ListItemText
-              style={{ margin: "0px 45px" }}
-              primary={<AddPostBtn />}
-            />
-          </ListItem>
-          <NavLink
-            style={{ textDecoration: "none", color: "#1976d2" }}
-            to={`/user-profile/${currentUser._id}`}
-          >
-            <ListItem button key="1">
-              <ListItemIcon>
-                <PersonIcon />
-              </ListItemIcon>
-              <ListItemText primary={`hi, ${currentUser.name}`} />
+        <div>
+          <List>
+            <ListItem style={{ padding: "0" }} button key="4">
+              <ListItemText
+                style={{ margin: "0px 40px" }}
+                primary={<AddPostBtn />}
+              />
+              <IconButton
+                style={{
+                  color: "#000",
+                  marginRight: "20px",
+                  backgroundColor: "transparent",
+                }}
+                aria-label="menu"
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
             </ListItem>
-          </NavLink>
-          <NavLink
-            style={{ textDecoration: "none", color: "#1976d2" }}
-            to="/logout"
-          >
-            <ListItem button key="2">
-              <ListItemIcon>
-                <MeetingRoomIcon />
-              </ListItemIcon>
-              <ListItemText primary="logout" />
-            </ListItem>
-          </NavLink>
-        </List>
+
+            <NavLink style={{ textDecoration: "none", color: "#000" }} to={`/`}>
+              <ListItem button key="5">
+                <ListItemIcon style={{ color: "#000" }}>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="home" />
+              </ListItem>
+            </NavLink>
+
+            <NavLink
+              style={{ textDecoration: "none", color: "#000" }}
+              to={`/user-profile/${currentUser._id}`}
+            >
+              <ListItem button key="1">
+                <ListItemIcon style={{ color: "#000" }}>
+                  <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary={`Hi, ${currentUser.name}`} />
+              </ListItem>
+            </NavLink>
+            <NavLink
+              style={{ textDecoration: "none", color: "#000" }}
+              to="/logout"
+            >
+              <ListItem button key="2">
+                <ListItemIcon style={{ color: "#000" }}>
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItem>
+            </NavLink>
+          </List>
+        </div>
       ) : (
-        <List>
-          <ListItem button key="3">
-            <ListItemText
-              style={{ margin: "0px 45px" }}
-              primary={<AddPostBtn />}
-            />
-          </ListItem>
-          <NavLink
-            style={{ textDecoration: "none", color: "#1976d2" }}
-            to="/login"
-          >
-            <ListItem button key="1">
-              <ListItemIcon>
-                <ExitToAppIcon />
-              </ListItemIcon>
-              <ListItemText primary={"login"} />
+        <div>
+          <List>
+            <ListItem style={{ padding: "0" }} button key="4">
+              <ListItemText
+                style={{ margin: "0px 40px" }}
+                primary={<AddPostBtn />}
+              />
+              <IconButton
+                style={{
+                  color: "#000",
+                  marginRight: "20px",
+                  backgroundColor: "transparent",
+                }}
+                aria-label="menu"
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
             </ListItem>
-          </NavLink>
-          <NavLink
-            style={{ textDecoration: "none", color: "#1976d2" }}
-            to="/signup"
-          >
-            <ListItem button key="2">
-              <ListItemIcon>
-                <PersonAddIcon />
-              </ListItemIcon>
-              <ListItemText primary="signup" />
-            </ListItem>
-          </NavLink>
-        </List>
+
+            <NavLink
+              style={{ textDecoration: "none", color: "#000" }}
+              to="/login"
+            >
+              <ListItem button key="1">
+                <ListItemIcon style={{ color: "#000" }}>
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <ListItemText primary={"login"} />
+              </ListItem>
+            </NavLink>
+            <NavLink
+              style={{ textDecoration: "none", color: "#000" }}
+              to="/signup"
+            >
+              <ListItem button key="2">
+                <ListItemIcon style={{ color: "#000" }}>
+                  <PersonAddIcon />
+                </ListItemIcon>
+                <ListItemText primary="signup" />
+              </ListItem>
+            </NavLink>
+          </List>
+        </div>
       )}
     </div>
   );
@@ -180,29 +192,21 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
       <AppBar
         elevation={0}
         position="absolute"
-        style={{ backgroundColor: "#1976d2" }}
+        style={{ backgroundColor: "#fff" }}
       >
         <Container disableGutters maxWidth="xl">
           <Toolbar>
-            <NavLink style={{ textDecoration: "none", color: "white" }} to="/">
-              <img height="35px" src={"/images/logo3_white.png"} alt="logo" />
-            </NavLink>
-
-            {isMobile && isShown ? null : (
-              <Typography variant="h6">
-                <NavLink
-                  style={{
-                    textDecoration: "none",
-                    color: "white",
-                    marginLeft: "5px",
-                    whiteSpace: "nowrap",
-                  }}
-                  to="/"
-                >
-                  Pixa Verse
-                </NavLink>
-              </Typography>
-            )}
+            <Typography variant="h5">
+              <NavLink
+                style={{
+                  textDecoration: "none",
+                  color: "#000",
+                }}
+                to="/"
+              >
+                pixaplace
+              </NavLink>
+            </Typography>
 
             {isShown ? (
               <SearchBar
@@ -210,15 +214,15 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
                 location={location}
                 window={window}
               />
-            ) : null}
+            ) : (
+              <div className={classes.grow}></div>
+            )}
 
-            <div className={classes.grow} />
             <div
               className={classes.xs_down}
               style={{
                 float: "left",
                 marginRight: "5px",
-                marginTop: "1px",
               }}
             >
               <AddPostBtn />
@@ -227,7 +231,7 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
               <>
                 <IconButton
                   edge="end"
-                  color="inherit"
+                  style={{ color: "#000", backgroundColor: "transparent" }}
                   aria-label="menu"
                   onClick={handleDrawerToggle}
                 >
@@ -254,23 +258,29 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
             ) : (
               <div>
                 {currentUser && (
-                  <div>
+                  <div style={{ whiteSpace: "nowrap" }}>
                     <NavLink
-                      style={{ textDecoration: "none", color: "white" }}
+                      style={{
+                        textDecoration: "none",
+                        color: "#000",
+                      }}
                       to={`/user-profile/${currentUser._id}`}
                     >
-                      <Button color="inherit">
+                      <Button variant="text" color="inherit">
                         <PersonIcon />
                         hi, {userUpdated.name || currentUser.name}
                       </Button>
                     </NavLink>
 
                     <NavLink
-                      style={{ textDecoration: "none", color: "white" }}
+                      style={{ textDecoration: "none", color: "#000" }}
                       to="/logout"
                     >
-                      <Button color="inherit">
-                        <MeetingRoomIcon />
+                      <Button
+                        color="inherit"
+                        style={{ textDecoration: "lowercase" }}
+                      >
+                        <ExitToAppIcon style={{ marginRight: "2px" }} />
                         logout
                       </Button>
                     </NavLink>
@@ -278,9 +288,9 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
                 )}
 
                 {!currentUser && (
-                  <div>
+                  <div style={{ whiteSpace: "nowrap" }}>
                     <NavLink
-                      style={{ textDecoration: "none", color: "white" }}
+                      style={{ textDecoration: "none", color: "#000" }}
                       to="/login"
                     >
                       <Button color="inherit">
@@ -290,7 +300,7 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
                     </NavLink>
 
                     <NavLink
-                      style={{ textDecoration: "none", color: "white" }}
+                      style={{ textDecoration: "none", color: "#000" }}
                       to="/signup"
                     >
                       <Button color="inherit">

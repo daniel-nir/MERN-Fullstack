@@ -3,7 +3,7 @@ import Posts from "./posts";
 import postService from "../services/postService";
 import userService from "../services/userService";
 import Loader from "react-loader-spinner";
-import { Container, Typography } from "@material-ui/core";
+import { Box, Container, Divider, Grid, Typography } from "@material-ui/core";
 
 const Search = (props) => {
   const [allPosts, setAllPosts] = useState([]);
@@ -42,7 +42,7 @@ const Search = (props) => {
   }, [isMounted, props.location.search, searchTerm]);
 
   return (
-    <Container disableGutters maxWidth="xl">
+    <Container maxWidth="xl" disableGutters>
       {isLoading ? (
         <Loader
           style={{ textAlign: "center" }}
@@ -50,7 +50,7 @@ const Search = (props) => {
           color="#00BFFF"
           height={400}
           width={50}
-          timeout={1000}
+          timeout={1500}
         />
       ) : (
         <div
@@ -62,52 +62,87 @@ const Search = (props) => {
             <>
               {filtered.length === 0 ? (
                 <>
-                  <Typography
-                    style={{
-                      color: "grey",
-                      margin: "35px 25px 0px 25px",
-                    }}
-                  >
-                    <b>Sorry, we couldn't find any matches.</b>
-                    <br />
-                    things you can try:
-                  </Typography>
-                  <ul style={{ color: "grey" }}>
-                    <li>
-                      <Typography>Check the spelling.</Typography>
-                    </li>
-                    <li>
-                      <Typography>Use synonyms or generic terms.</Typography>
-                    </li>
-                  </ul>
+                  <Container maxWidth="xl" style={{ margin: "5px 0 10px 0" }}>
+                    <Typography variant="body2">0 Photos</Typography>
+                  </Container>
+
+                  <Divider />
+
+                  <Container maxWidth="lg" style={{ marginTop: "20px" }}>
+                    <Typography
+                      style={{
+                        color: "grey",
+                      }}
+                    >
+                      <Typography
+                        variant="h3"
+                        component="h2"
+                        style={{
+                          margin: "40px 0",
+                          color: "#000",
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {searchTerm}
+                      </Typography>
+                      <b>Sorry, we couldn't find any matches.</b>
+                      <br />
+                      things you can try:
+                    </Typography>
+                    <ul style={{ color: "grey", marginLeft: "-24px" }}>
+                      <li>
+                        <Typography>Check the spelling.</Typography>
+                      </li>
+                      <li>
+                        <Typography>Use synonyms or generic terms.</Typography>
+                      </li>
+                    </ul>
+                    <Grid container>
+                      <Box m="auto">
+                        <img
+                          style={{ opacity: 0.4, marginTop: "20%" }}
+                          height="200"
+                          src="/images/sad_face_noresources.png"
+                          alt="sad face"
+                        />
+                      </Box>
+                    </Grid>
+                  </Container>
                 </>
               ) : (
                 <>
-                  <Typography
-                    variant="body2"
-                    style={{
-                      color: "grey",
-                      margin: "35px 25px",
-                    }}
-                  >
-                    {filtered.length} images of {searchTerm}
-                  </Typography>
-                  <Posts currentUser={currentUser} posts={filtered} />
+                  <Container maxWidth="xl" style={{ margin: "5px 0 10px 0" }}>
+                    <Typography variant="body2">
+                      {filtered.length} Photos
+                    </Typography>
+                  </Container>
+                  <Divider />
+                  <Container maxWidth="lg" style={{ marginTop: "20px" }}>
+                    <Typography
+                      variant="h3"
+                      component="h2"
+                      style={{ margin: "40px 0", textTransform: "capitalize" }}
+                    >
+                      {searchTerm}
+                    </Typography>
+                    <Posts currentUser={currentUser} posts={filtered} />
+                  </Container>
                 </>
               )}
             </>
           ) : (
             <>
-              <Typography
-                variant="body2"
-                style={{
-                  color: "grey",
-                  margin: "35px 25px",
-                }}
-              >
-                {allPosts.length}
-              </Typography>
-              <Posts currentUser={currentUser} posts={allPosts} />
+              <Container maxWidth="xl" style={{ margin: "5px 0 10px 0" }}>
+                <Typography variant="body2">
+                  {allPosts.length} Photos
+                </Typography>
+              </Container>
+
+              <Divider />
+
+              <Container maxWidth="lg" style={{ marginTop: "20px" }}>
+                <Posts currentUser={currentUser} posts={allPosts} />
+              </Container>
             </>
           )}
         </div>

@@ -6,11 +6,14 @@ import SearchIcon from "@material-ui/icons/Search";
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "30px",
-    padding: "2px 4px",
+    padding: "4px 8px",
     display: "flex",
     margin: "auto",
     alignItems: "center",
-    maxWidth: 400,
+    maxWidth: 700,
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: 380,
+    },
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -28,14 +31,6 @@ const SearchInput = (props) => {
   };
   return (
     <Paper onSubmit={handleSubmit} component="form" className={classes.root}>
-      <InputBase
-        type="text"
-        className={classes.input}
-        placeholder="Search images by tags"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-
       <IconButton
         type="submit"
         onSubmit={handleSubmit}
@@ -43,6 +38,13 @@ const SearchInput = (props) => {
       >
         <SearchIcon />
       </IconButton>
+      <InputBase
+        type="text"
+        className={classes.input}
+        placeholder="Search images"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
     </Paper>
   );
 };

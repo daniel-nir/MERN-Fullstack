@@ -47,7 +47,6 @@ const App = () => {
             minHeight: "86vh",
             marginTop: "55px",
             overflow: "hidden",
-            backgroundColor: "#fafafa",
           }}
         >
           <Switch>

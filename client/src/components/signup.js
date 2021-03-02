@@ -46,10 +46,7 @@ class Signup extends Form {
   render() {
     return (
       <div>
-        <PageHeader
-          title="Sign up for Pixa Place"
-          sub="make an account for free"
-        />
+        <PageHeader title="Join pixaplace" sub="Open a new account for free" />
 
         <form
           align="center"

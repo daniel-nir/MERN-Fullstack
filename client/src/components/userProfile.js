@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PageHeader from "./pageHeader";
 import PropTypes from "prop-types";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -7,11 +6,10 @@ import Tab from "@material-ui/core/Tab";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import SettingsIcon from "@material-ui/icons/Settings";
 import Posts from "./posts";
 import userService from "../services/userService";
 import postService from "../services/postService";
-import { Container, IconButton, Typography } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import Loader from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
@@ -49,7 +47,6 @@ function a11yProps(index) {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: "#fafafa",
     marginTop: "25px",
   },
 }));
@@ -116,9 +113,7 @@ const UserProfile = (props) => {
           console.log(err);
         } else return;
       });
-
-    //eslint-disable-next-line
-  }, []);
+  }, [props.match.params.id]);
 
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -155,54 +150,64 @@ const UserProfile = (props) => {
   };
 
   return (
-    <Container disableGutters maxWidth="xl">
-      <PageHeader
-        title={user.name}
-        sub={
-          <>
-            <Typography style={{ marginTop: "15px" }}>
-              Member since{"  "}
-              <Moment format="MMM. DD, YY">{user.createdAt}</Moment>
-            </Typography>
-            <Typography style={{ marginTop: "15px" }}>
-              {userPosts.length === 1 ? (
-                <>
-                  <b>{userPosts.length}</b>
-                  <span> post</span>
-                </>
-              ) : (
-                <>
-                  <b>{userPosts.length}</b>
-                  <span> posts</span>
-                </>
-              )}
-
-              <b style={{ marginLeft: "10px" }}>{totalLikes.length}</b>
-              <span> likes</span>
-            </Typography>
-          </>
-        }
-      />
-
-      {loggedIn
-        ? loggedIn._id === user._id && (
-            <div style={{ textAlign: "right", paddingRight: "30px" }}>
-              <IconButton>
-                <SettingsIcon fontSize="small" />
-              </IconButton>
-              <Link
+    <Container maxWidth="xl" disableGutters>
+      <Grid align="center">
+        {loggedIn
+          ? loggedIn._id === user._id && (
+              <Container
+                maxWidth="xl"
                 style={{
-                  textDecoration: "none",
+                  position: "absolute",
+                  textAlign: "right",
+                  marginTop: "7px",
                 }}
-                to="/user-profile/edit"
               >
-                <Button>edit user</Button>
-              </Link>
-            </div>
-          )
-        : null}
+                <Link
+                  style={{
+                    textDecoration: "none",
+                  }}
+                  to="/user-profile/edit"
+                >
+                  <Button size="small" variant="outlined">
+                    edit user
+                  </Button>
+                </Link>
+              </Container>
+            )
+          : null}
+        <Typography
+          style={{
+            textTransform: "capitalize",
+            marginTop: "100px",
+            fontSize: "40px",
+          }}
+          variant="h3"
+        >
+          {user.name}
+        </Typography>
+        <Typography style={{ marginTop: "15px" }}>
+          Member since
+          <Moment format=" MMM. DD, YY">{user.createdAt}</Moment>
+        </Typography>
+        <Typography style={{ marginTop: "15px" }}>
+          {userPosts.length === 1 ? (
+            <>
+              <b>{userPosts.length}</b>
+              <span> post</span>
+            </>
+          ) : (
+            <>
+              <b>{userPosts.length}</b>
+              <span> posts</span>
+            </>
+          )}
 
-      <Grid className={classes.root} style={{ backgroundColor: "#fafafa" }}>
+          <b style={{ marginLeft: "10px" }}>{totalLikes.length}</b>
+          <span> likes</span>
+        </Typography>
+      </Grid>
+
+      <Grid className={classes.root}>
         <StyledTabs value={value} onChange={handleChange} centered>
           <Tab
             disableRipple={true}
@@ -231,7 +236,7 @@ const UserProfile = (props) => {
             onClick={handleGetSaved}
           />
         </StyledTabs>
-        <Divider variant="middle" />
+        <Divider variant="fullWidth" />
 
         <TabPanel
           className={classes.root}
@@ -249,7 +254,15 @@ const UserProfile = (props) => {
               timeout={1500}
             />
           ) : (
-            <Posts currentUser={currentUser} posts={userPosts} />
+            <Container maxWidth="lg">
+              {userPosts.length > 0 ? (
+                <Posts currentUser={currentUser} posts={userPosts} />
+              ) : (
+                <Typography style={{ textAlign: "center" }}>
+                  wow, thats a very clean profile!
+                </Typography>
+              )}
+            </Container>
           )}
         </TabPanel>
         <TabPanel
@@ -270,7 +283,15 @@ const UserProfile = (props) => {
           ) : (
             <>
               {currentUser ? (
-                <Posts currentUser={currentUser} posts={favPosts} />
+                <Container maxWidth="lg">
+                  {favPosts.length > 0 ? (
+                    <Posts currentUser={currentUser} posts={favPosts} />
+                  ) : (
+                    <Typography style={{ textAlign: "center" }}>
+                      no saved yet...
+                    </Typography>
+                  )}
+                </Container>
               ) : (
                 <Typography style={{ textAlign: "center" }}>
                   This users saved posts are private and are currently hidden.
