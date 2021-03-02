@@ -70,21 +70,21 @@ const Search = (props) => {
 
                   <Container maxWidth="lg" style={{ marginTop: "20px" }}>
                     <Typography
+                      variant="h3"
+                      component="h2"
+                      style={{
+                        margin: "40px 0",
+                        color: "#000",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {searchTerm}
+                    </Typography>
+                    <Typography
                       style={{
                         color: "grey",
                       }}
                     >
-                      <Typography
-                        variant="h3"
-                        component="h2"
-                        style={{
-                          margin: "40px 0",
-                          color: "#000",
-                          textTransform: "capitalize",
-                        }}
-                      >
-                        {searchTerm}
-                      </Typography>
                       <b>Sorry, we couldn't find any matches.</b>
                       <br />
                       things you can try:

@@ -12,6 +12,7 @@ import {
   Button,
   GridList,
   Fade,
+  Tooltip,
 } from "@material-ui/core";
 import React, { useEffect, useState, useRef } from "react";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -22,7 +23,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import userService from "../services/userService";
 import postService from "../services/postService";
 import Dialog from "@material-ui/core/Dialog";
@@ -42,7 +43,46 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     marginRight: theme.spacing(10),
   },
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: "rgba(0, 0, 0, 0.87)",
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+  },
+
+  linkTop: {
+    textDecoration: "none",
+    color: "#fff",
+    transition: ".3s",
+    borderRadius: "2px!important",
+    padding: "6px 6px!important",
+    "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" },
+    position: "absolute",
+    left: "10px",
+    top: "15px",
+  },
+  linkBottom: {
+    textDecoration: "none",
+    color: "#fff",
+    transition: ".3s",
+    borderRadius: "2px!important",
+    padding: "6px 6px!important",
+    "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" },
+    marginRight: "6px",
+  },
 }));
+
+const CustomTooltip = withStyles((theme) => ({
+  tooltip: {
+    borderRadius: "0px",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: 300,
+    marginBottom: "0",
+    transform: "none",
+  },
+}))(Tooltip);
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -182,78 +222,91 @@ const Post = ({ post, currentUser, history }) => {
                   style={{
                     paddingTop: "15px",
                     background:
-                      "linear-gradient(to top, rgba(0,0,0,0.7) 0%, " +
+                      "linear-gradient(to top, rgba(0,0,0,0.5) 0%, " +
                       "rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 100%)",
                   }}
                   titlePosition="bottom"
                   actionIcon={
-                    <div>
+                    <div style={{ whiteSpace: "nowrap" }}>
                       {currentUser ? (
                         <>
                           {isLiked ? (
                             <Grow in={true}>
+                              <CustomTooltip placement="top" title="unlike">
+                                <IconButton
+                                  disableRipple
+                                  onClick={handleUnlike}
+                                  style={{
+                                    marginBottom: "-1px",
+                                    color: "#EE1D52",
+                                    backgroundColor: "transparent",
+                                  }}
+                                  aria-label={`unlike`}
+                                >
+                                  <FavoriteIcon />
+                                  <Typography
+                                    variant="button"
+                                    style={{ color: "white" }}
+                                  >
+                                    {likes.length || post.postLikes.length}
+                                  </Typography>
+                                </IconButton>
+                              </CustomTooltip>
+                            </Grow>
+                          ) : (
+                            <CustomTooltip placement="top" title="like">
                               <IconButton
                                 disableRipple
-                                onClick={handleUnlike}
+                                onClick={handleLike}
                                 style={{
                                   marginBottom: "-1px",
-                                  color: "#EE1D52",
+                                  color: "#fff",
+                                  backgroundColor: "transparent",
                                 }}
-                                aria-label={`star ${user.name}`}
+                                aria-label="like post"
                               >
-                                <FavoriteIcon />
+                                <FavoriteBorderIcon />
                                 <Typography
                                   variant="button"
-                                  style={{ color: "white" }}
+                                  style={{
+                                    color: "#fff",
+                                    backgroundColor: "transparent",
+                                  }}
                                 >
                                   {likes.length || post.postLikes.length}
                                 </Typography>
                               </IconButton>
-                            </Grow>
-                          ) : (
-                            <IconButton
-                              disableRipple
-                              onClick={handleLike}
-                              style={{ marginBottom: "-1px", color: "white" }}
-                              aria-label="like post"
-                            >
-                              <FavoriteBorderIcon />
-                              <Typography
-                                variant="button"
-                                style={{
-                                  color: "white",
-                                }}
-                              >
-                                {likes.length || post.postLikes.length}
-                              </Typography>
-                            </IconButton>
+                            </CustomTooltip>
                           )}
                           {isFavorite ? (
                             <Grow in={true}>
-                              <IconButton
-                                disableRipple
-                                onClick={handleUnfavorite}
-                                style={{
-                                  color: "#fff",
-                                }}
-                                aria-label={`unfavorite ${user.name}`}
-                              >
-                                <BookmarkIcon />
-                              </IconButton>
+                              <CustomTooltip placement="top" title="unsave">
+                                <IconButton
+                                  onClick={handleUnfavorite}
+                                  style={{
+                                    color: "#fff",
+                                    backgroundColor: "transparent",
+                                  }}
+                                  aria-label={`unfavorite ${user.name}`}
+                                >
+                                  <BookmarkIcon />
+                                </IconButton>
+                              </CustomTooltip>
                             </Grow>
                           ) : (
-                            <IconButton
-                              disableRipple
-                              onClick={handleFavorite}
-                              style={{ color: "white" }}
-                              aria-label={`favorite ${user.name}`}
-                            >
-                              <BookmarkBorderIcon />
-                            </IconButton>
+                            <CustomTooltip placement="top" title="save">
+                              <IconButton
+                                disableRipple
+                                onClick={handleFavorite}
+                                style={{ color: "white" }}
+                                aria-label={`favorite ${user.name}`}
+                              >
+                                <BookmarkBorderIcon />
+                              </IconButton>
+                            </CustomTooltip>
                           )}
                         </>
                       ) : (
-                        //!currentUser
                         <Link style={{ textDecoration: "none" }} to="/login">
                           <IconButton
                             disableRipple
@@ -274,20 +327,15 @@ const Post = ({ post, currentUser, history }) => {
                           </IconButton>
                         </Link>
                       )}
+
                       {post.postTags.slice(0, 2).map((postTag, index) => (
-                        <span
+                        <Link
                           key={index}
-                          style={{
-                            padding: "3px",
-                          }}
+                          className={classes.linkBottom}
+                          to={`/search?q=${postTag}`}
                         >
-                          <Link
-                            to={`/search?q=${postTag}`}
-                            style={{ textDecoration: "none", color: "#fff" }}
-                          >
-                            #{postTag}
-                          </Link>
-                        </span>
+                          {postTag}
+                        </Link>
                       ))}
                     </div>
                   }
@@ -300,49 +348,55 @@ const Post = ({ post, currentUser, history }) => {
                   style={{
                     top: "-5px",
                     background:
-                      "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
+                      "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, " +
                       "rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 100%)",
                   }}
-                  title={
-                    <Typography>
+                  titlePosition="top"
+                  subtitle={
+                    <div style={{ margin: "40px 0 0 0px" }}>
+                      {post.postText}
+                    </div>
+                  }
+                  actionIcon={
+                    <div style={{ whiteSpace: "nowrap" }}>
                       <Link
-                        style={{ textDecoration: "none", color: "white" }}
+                        className={classes.linkTop}
                         to={`/user-profile/${post._user}`}
                       >
                         {user.name}
                       </Link>
-
+                      <div className={classes.grow}></div>
                       <Moment
-                        style={{ float: "right", margin: "0px 15px 0px 0px " }}
+                        style={{
+                          top: "10px",
+                          color: "#fff",
+                          margin: "12px 15px 0px 0px ",
+                        }}
                         fromNow
                       >
                         {post.createdAt}
                       </Moment>
-                    </Typography>
-                  }
-                  titlePosition="top"
-                  subtitle={post.postText}
-                  actionIcon={
-                    <>
                       {currentUser ? (
                         <>
                           {currentUser._id === post._user ? (
-                            <IconButton
-                              ref={anchorRef}
-                              aria-controls={
-                                open ? "menu-list-grow" : undefined
-                              }
-                              aria-haspopup="true"
-                              onClick={handleToggle}
-                              style={{ color: "white" }}
-                              aria-label="more"
-                            >
-                              <MoreHorizIcon />
-                            </IconButton>
+                            <>
+                              <IconButton
+                                ref={anchorRef}
+                                aria-controls={
+                                  open ? "menu-list-grow" : undefined
+                                }
+                                aria-haspopup="true"
+                                onClick={handleToggle}
+                                style={{ color: "white" }}
+                                aria-label="more"
+                              >
+                                <MoreHorizIcon />
+                              </IconButton>
+                            </>
                           ) : null}
                         </>
                       ) : null}
-                    </>
+                    </div>
                   }
                 />
               </Fade>
