@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { fade, InputBase, makeStyles } from "@material-ui/core";
+import React, { useEffect, useRef, useState } from "react";
+import { fade, IconButton, InputBase, makeStyles } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles((theme) => ({
   xs_down: {
@@ -36,9 +37,16 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  clearIcon: {
+    padding: theme.spacing(0, 2),
+    right: "0",
+    height: "100%",
+    position: "absolute",
+    display: "flex",
+  },
   inputRoot: {
     color: "inherit",
-    width: "100%",
+    width: "80%",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -53,6 +61,7 @@ const SearchBar = (props) => {
   const classes = useStyles();
   const [input, setInput] = useState("");
   const [isMounted, setIsMounted] = useState(false);
+  const searchInput = useRef(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -69,19 +78,41 @@ const SearchBar = (props) => {
     props.history.push(`/search?q=${input}`);
   };
 
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  };
+  function handleClearInput() {
+    setInput("");
+    searchInput.current.focus();
+  }
+
   return (
     <form onSubmit={handleSubmit} className={classes.search}>
+      {input && (
+        <div className={classes.clearIcon}>
+          <IconButton
+            style={{ backgroundColor: "transparent" }}
+            size="small"
+            onClick={handleClearInput}
+          >
+            <ClearIcon />
+          </IconButton>
+        </div>
+      )}
+
       <div className={classes.searchIcon}>
         <SearchIcon />
       </div>
       <InputBase
-        placeholder="Search…"
+        inputRef={searchInput}
+        type="text"
+        placeholder="Search photos…"
         classes={{
           root: classes.inputRoot,
           input: classes.inputInput,
         }}
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={handleChange}
       />
     </form>
   );

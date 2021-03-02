@@ -288,7 +288,7 @@ const UserProfile = (props) => {
                     <Posts currentUser={currentUser} posts={favPosts} />
                   ) : (
                     <Typography style={{ textAlign: "center" }}>
-                      no saved yet...
+                      no saved posts
                     </Typography>
                   )}
                 </Container>

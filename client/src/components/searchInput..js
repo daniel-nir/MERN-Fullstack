@@ -1,7 +1,8 @@
-import React, { useState /* useEffect */ } from "react";
+import React, { useRef, useState /* useEffect */ } from "react";
 import { InputBase, makeStyles, Paper } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
+import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,27 +25,39 @@ const useStyles = makeStyles((theme) => ({
 const SearchInput = (props) => {
   const classes = useStyles();
   const [input, setInput] = useState("");
+  const searchInput = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     props.history.replace(`/search?q=${input}`);
   };
+
+  const handleClearInput = (e) => {
+    setInput("");
+    searchInput.current.focus();
+  };
+
   return (
     <Paper onSubmit={handleSubmit} component="form" className={classes.root}>
-      <IconButton
-        type="submit"
-        onSubmit={handleSubmit}
-        className={classes.iconButton}
-      >
+      <IconButton type="submit" className={classes.iconButton}>
         <SearchIcon />
       </IconButton>
       <InputBase
+        inputRef={searchInput}
         type="text"
         className={classes.input}
         placeholder="Search images"
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
+      {input && (
+        <IconButton
+          style={{ backgroundColor: "transparent" }}
+          onClick={handleClearInput}
+        >
+          <ClearIcon />
+        </IconButton>
+      )}
     </Paper>
   );
 };

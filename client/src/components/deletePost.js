@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import postService from "../services/postService";
+import userService from "../services/userService";
 
-const DeletePost = (props) => {
+const DeletePost = ({ match, history }) => {
   useEffect(() => {
-    const postId = props.match.params.id;
+    const currentUser = userService.getCurrentUser();
+    const postId = match.params.id;
     postService.deletePost(postId);
     toast.info("post deleted");
-    props.history.replace("/");
+    history.replace(`/user-profile/${currentUser._id}`);
   });
   return null;
 };
