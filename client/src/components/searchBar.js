@@ -22,11 +22,14 @@ const useStyles = makeStyles((theme) => ({
     color: "#555",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.black, 0.05),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.black, 0.06),
-    },
-    margin: "0  20px !important",
+    margin: "0  25px !important",
     width: "100%",
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.black, 0.07),
+    },
+    [theme.breakpoints.down("xs")]: {
+      margin: "0 15px !important",
+    },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -36,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    color: "#999",
   },
   clearIcon: {
     padding: theme.spacing(0, 2),
@@ -44,9 +48,12 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     display: "flex",
     zIndex: "1",
+    "&:hover": {
+      color: "#000",
+    },
   },
   inputRoot: {
-    color: "inherit",
+    color: "#000",
     width: "100%",
   },
   inputInput: {
@@ -90,15 +97,14 @@ const SearchBar = (props) => {
   return (
     <form onSubmit={handleSubmit} className={classes.search}>
       {input && (
-        <div className={classes.clearIcon}>
-          <IconButton
-            style={{ backgroundColor: "transparent" }}
-            size="small"
-            onClick={handleClearInput}
-          >
-            <ClearIcon />
-          </IconButton>
-        </div>
+        <IconButton
+          className={classes.clearIcon}
+          style={{ backgroundColor: "transparent" }}
+          size="small"
+          onClick={handleClearInput}
+        >
+          <ClearIcon fontSize="small" />
+        </IconButton>
       )}
 
       <div className={classes.searchIcon}>

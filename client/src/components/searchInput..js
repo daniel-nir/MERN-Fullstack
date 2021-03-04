@@ -6,12 +6,12 @@ import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: "30px",
+    marginTop: "25px",
     padding: "4px 8px",
     display: "flex",
-    margin: "auto",
+
     alignItems: "center",
-    maxWidth: 700,
+    maxWidth: 850,
     [theme.breakpoints.down("xs")]: {
       maxWidth: 380,
     },
@@ -19,6 +19,11 @@ const useStyles = makeStyles((theme) => ({
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
+  },
+  btn: {
+    "&:hover": {
+      color: "#333",
+    },
   },
 }));
 
@@ -38,8 +43,17 @@ const SearchInput = (props) => {
   };
 
   return (
-    <Paper onSubmit={handleSubmit} component="form" className={classes.root}>
-      <IconButton type="submit" className={classes.iconButton}>
+    <Paper
+      elevation={0}
+      onSubmit={handleSubmit}
+      component="form"
+      className={classes.root}
+    >
+      <IconButton
+        type="submit"
+        className={classes.btn}
+        style={{ backgroundColor: "transparent" }}
+      >
         <SearchIcon />
       </IconButton>
       <InputBase
@@ -52,10 +66,11 @@ const SearchInput = (props) => {
       />
       {input && (
         <IconButton
+          className={classes.btn}
           style={{ backgroundColor: "transparent" }}
           onClick={handleClearInput}
         >
-          <ClearIcon />
+          <ClearIcon fontSize="small" />
         </IconButton>
       )}
     </Paper>

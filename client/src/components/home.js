@@ -51,13 +51,14 @@ const Home = ({ location, history }) => {
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "cover",
-          padding: "180px 15px",
+          padding: "140px 25px",
         }}
       >
         <Grid align="center" container>
           <Grid item xs={12}>
             <Typography
               style={{
+                textAlign: "center",
                 fontSmooth: "auto",
                 fontSize: "48px",
                 color: "white",
@@ -71,7 +72,7 @@ const Home = ({ location, history }) => {
             <Typography
               style={{
                 fontSmooth: "auto",
-                fontSize: "20px",
+                fontSize: "18px",
                 color: "white",
               }}
             >
@@ -79,10 +80,12 @@ const Home = ({ location, history }) => {
             </Typography>
           </Grid>
         </Grid>
-        <SearchInput location={location} history={history} posts={posts} />
+        <Grid align="center" item>
+          <SearchInput location={location} history={history} posts={posts} />
+        </Grid>
         <Grid align="center" container>
           <Grid item xs={12}>
-            <Typography style={{ margin: "25px", color: "white" }}>
+            <Typography style={{ margin: "25px", color: "#efefef" }}>
               example app
             </Typography>
           </Grid>
@@ -100,7 +103,7 @@ const Home = ({ location, history }) => {
             timeout={1000}
           />
         ) : (
-          <Container maxWidth="lg" style={{ marginTop: "40px" }}>
+          <Container maxWidth="lg" style={{ marginTop: "30px" }}>
             <Posts currentUser={currentUser} posts={posts} />
           </Container>
         )}

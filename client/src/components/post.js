@@ -12,7 +12,6 @@ import {
   Button,
   GridList,
   Fade,
-  Tooltip,
 } from "@material-ui/core";
 import React, { useEffect, useState, useRef } from "react";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -23,7 +22,7 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import { Link } from "react-router-dom";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import userService from "../services/userService";
 import postService from "../services/postService";
 import Dialog from "@material-ui/core/Dialog";
@@ -43,11 +42,14 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     marginRight: theme.spacing(10),
   },
-  tooltip: {
-    backgroundColor: theme.palette.common.white,
-    color: "rgba(0, 0, 0, 0.87)",
-    boxShadow: theme.shadows[1],
-    fontSize: 11,
+  bar: {
+    position: "absolute",
+    top: "0",
+    height: "100%",
+    backgroundColor: "transparent",
+    "&:hover": {
+      backgroundColor: "rgba(0,0,0,0.2)",
+    },
   },
 
   linkTop: {
@@ -58,31 +60,38 @@ const useStyles = makeStyles((theme) => ({
     padding: "6px 6px!important",
     "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" },
     position: "absolute",
-    left: "10px",
-    top: "15px",
+    left: "8px",
+    top: "8px",
   },
-  linkBottom: {
+  linkL: {
     textDecoration: "none",
     color: "#fff",
     transition: ".3s",
     borderRadius: "2px!important",
     padding: "6px 6px!important",
-    "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" },
     marginRight: "6px",
+    "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" },
+  },
+
+  linkR: {
+    textDecoration: "none",
+    color: "#fff",
+    transition: ".3s",
+    borderRadius: "2px!important",
+    padding: "6px 6px!important",
+    marginLeft: "6px",
+    "&:hover": { backgroundColor: "rgba(255,255,255,0.3)" },
+  },
+
+  action: {
+    position: "absolute",
+    left: "8px",
+    bottom: "8px",
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
   },
 }));
-
-const CustomTooltip = withStyles((theme) => ({
-  tooltip: {
-    borderRadius: "0px",
-    backgroundColor: "rgba(0,0,0,0.4)",
-    color: "#fff",
-    fontSize: 14,
-    fontWeight: 300,
-    marginBottom: "0",
-    transform: "none",
-  },
-}))(Tooltip);
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -203,7 +212,12 @@ const Post = ({ post, currentUser, history }) => {
 
   return (
     <div className={classes.root}>
-      <GridList cellHeight={280} style={{ maxWidth: 500, padding: "0 1px " }}>
+      <GridList
+        cellHeight={280}
+        style={{
+          maxWidth: 500,
+        }}
+      >
         <GridListTile
           style={{
             flex: "25%",
@@ -219,29 +233,55 @@ const Post = ({ post, currentUser, history }) => {
             <>
               <Fade in={true}>
                 <GridListTileBar
-                  style={{
-                    paddingTop: "15px",
-                    background:
-                      "linear-gradient(to top, rgba(0,0,0,0.5) 0%, " +
-                      "rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 100%)",
-                  }}
+                  className={classes.bar}
                   titlePosition="bottom"
+                  subtitle={
+                    <Moment
+                      style={{
+                        position: "absolute",
+                        top: "42px",
+                        left: "15px",
+                        color: "#fff",
+                      }}
+                      fromNow
+                    >
+                      {post.createdAt}
+                    </Moment>
+                  }
                   actionIcon={
-                    <div style={{ whiteSpace: "nowrap" }}>
-                      {currentUser ? (
-                        <>
-                          {isLiked ? (
-                            <Grow in={true}>
-                              <CustomTooltip placement="top" title="unlike">
+                    <div>
+                      <div className={classes.action}>
+                        <div
+                          style={{
+                            alignSelf: "flex-end",
+                          }}
+                        >
+                          {post.postTags.slice(0, 4).map((postTag, index) => (
+                            <Link
+                              key={index}
+                              className={classes.linkL}
+                              to={`/search?q=${postTag}`}
+                              style={{ float: "left" }}
+                            >
+                              {postTag}
+                            </Link>
+                          ))}
+                        </div>
+                        <div
+                          style={{
+                            alignSelf: "flex-end",
+                            whiteSpace: "nowrap",
+                            marginRight: "16px",
+                          }}
+                        >
+                          {currentUser ? (
+                            <>
+                              {isLiked ? (
                                 <IconButton
-                                  disableRipple
+                                  className={classes.linkR}
+                                  size="small"
                                   onClick={handleUnlike}
-                                  style={{
-                                    marginBottom: "-1px",
-                                    color: "#EE1D52",
-                                    backgroundColor: "transparent",
-                                  }}
-                                  aria-label={`unlike`}
+                                  aria-label="unlike"
                                 >
                                   <FavoriteIcon />
                                   <Typography
@@ -251,143 +291,95 @@ const Post = ({ post, currentUser, history }) => {
                                     {likes.length || post.postLikes.length}
                                   </Typography>
                                 </IconButton>
-                              </CustomTooltip>
-                            </Grow>
-                          ) : (
-                            <CustomTooltip placement="top" title="like">
-                              <IconButton
-                                disableRipple
-                                onClick={handleLike}
-                                style={{
-                                  marginBottom: "-1px",
-                                  color: "#fff",
-                                  backgroundColor: "transparent",
-                                }}
-                                aria-label="like post"
-                              >
-                                <FavoriteBorderIcon />
-                                <Typography
-                                  variant="button"
-                                  style={{
-                                    color: "#fff",
-                                    backgroundColor: "transparent",
-                                  }}
-                                >
-                                  {likes.length || post.postLikes.length}
-                                </Typography>
-                              </IconButton>
-                            </CustomTooltip>
-                          )}
-                          {isFavorite ? (
-                            <Grow in={true}>
-                              <CustomTooltip placement="top" title="unsave">
+                              ) : (
                                 <IconButton
+                                  className={classes.linkR}
+                                  size="small"
+                                  onClick={handleLike}
+                                  aria-label="like post"
+                                >
+                                  <FavoriteBorderIcon />
+                                  <Typography
+                                    variant="button"
+                                    style={{
+                                      color: "#fff",
+                                      backgroundColor: "transparent",
+                                    }}
+                                  >
+                                    {likes.length || post.postLikes.length}
+                                  </Typography>
+                                </IconButton>
+                              )}
+                              {isFavorite ? (
+                                <IconButton
+                                  className={classes.linkR}
+                                  size="small"
                                   onClick={handleUnfavorite}
-                                  style={{
-                                    color: "#fff",
-                                    backgroundColor: "transparent",
-                                  }}
                                   aria-label={`unfavorite ${user.name}`}
                                 >
                                   <BookmarkIcon />
                                 </IconButton>
-                              </CustomTooltip>
-                            </Grow>
+                              ) : (
+                                <IconButton
+                                  className={classes.linkR}
+                                  size="small"
+                                  onClick={handleFavorite}
+                                  aria-label={`favorite ${user.name}`}
+                                >
+                                  <BookmarkBorderIcon />
+                                </IconButton>
+                              )}
+                            </>
                           ) : (
-                            <CustomTooltip placement="top" title="save">
+                            <Link
+                              style={{ textDecoration: "none" }}
+                              to="/login"
+                            >
                               <IconButton
-                                disableRipple
-                                onClick={handleFavorite}
-                                style={{ color: "white" }}
+                                className={classes.linkR}
+                                aria-label={`star ${user.name}`}
+                              >
+                                <FavoriteBorderIcon />
+                                <Typography variant="button">
+                                  {likes.length || post.postLikes.length}
+                                </Typography>
+                              </IconButton>
+                              <IconButton
+                                className={classes.linkR}
                                 aria-label={`favorite ${user.name}`}
                               >
                                 <BookmarkBorderIcon />
                               </IconButton>
-                            </CustomTooltip>
+                            </Link>
                           )}
-                        </>
-                      ) : (
-                        <Link style={{ textDecoration: "none" }} to="/login">
-                          <IconButton
-                            disableRipple
-                            style={{ marginBottom: "-1px", color: "white" }}
-                            aria-label={`star ${user.name}`}
-                          >
-                            <FavoriteBorderIcon />
-                            <Typography variant="button">
-                              {likes.length || post.postLikes.length}
-                            </Typography>
-                          </IconButton>
-                          <IconButton
-                            disableRipple
-                            style={{ color: "white" }}
-                            aria-label={`favorite ${user.name}`}
-                          >
-                            <BookmarkBorderIcon />
-                          </IconButton>
-                        </Link>
-                      )}
-
-                      {post.postTags.slice(0, 2).map((postTag, index) => (
-                        <Link
-                          key={index}
-                          className={classes.linkBottom}
-                          to={`/search?q=${postTag}`}
-                        >
-                          {postTag}
-                        </Link>
-                      ))}
-                    </div>
-                  }
-                  actionPosition="left"
-                />
-              </Fade>
-
-              <Fade in={true}>
-                <GridListTileBar
-                  style={{
-                    top: "-5px",
-                    background:
-                      "linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, " +
-                      "rgba(0,0,0,0.3) 30%, rgba(0,0,0,0) 100%)",
-                  }}
-                  titlePosition="top"
-                  subtitle={
-                    <div style={{ margin: "40px 0 0 0px" }}>
-                      {post.postText}
-                    </div>
-                  }
-                  actionIcon={
-                    <div style={{ whiteSpace: "nowrap" }}>
+                        </div>
+                      </div>
                       <Link
                         className={classes.linkTop}
                         to={`/user-profile/${post._user}`}
                       >
                         {user.name}
                       </Link>
-                      <div className={classes.grow}></div>
-                      <Moment
-                        style={{
-                          top: "10px",
-                          color: "#fff",
-                          margin: "12px 15px 0px 0px ",
-                        }}
-                        fromNow
-                      >
-                        {post.createdAt}
-                      </Moment>
+
                       {currentUser ? (
                         <>
                           {currentUser._id === post._user ? (
                             <>
                               <IconButton
+                                className={classes.linkR}
+                                size="small"
                                 ref={anchorRef}
                                 aria-controls={
                                   open ? "menu-list-grow" : undefined
                                 }
                                 aria-haspopup="true"
                                 onClick={handleToggle}
-                                style={{ color: "white" }}
+                                style={{
+                                  position: "absolute",
+                                  color: "white",
+                                  top: "8px",
+                                  right: "8px",
+                                }}
                                 aria-label="more"
                               >
                                 <MoreHorizIcon />
