@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.common.white,
     backgroundColor: green["A700"],
     "&:hover": {
-      backgroundColor: green[500],
+      backgroundColor: "#47b800",
     },
   },
 }));

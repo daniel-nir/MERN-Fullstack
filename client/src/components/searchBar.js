@@ -24,32 +24,40 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
-  search: {
+  form: {
     position: "relative",
     color: "#555",
-    borderRadius: theme.shape.borderRadius,
     margin: "0  25px !important",
     width: "100%",
-
+    borderRadius: "20px!important",
+    border: "solid 1px #f2f2f2",
+    backgroundColor: fade(theme.palette.common.black, 0.05),
+    transition: "all .1s ease-in-out",
+    "&:hover": { border: "solid 1px #e3e3e3" },
     [theme.breakpoints.down("xs")]: {
       margin: "0 15px !important",
     },
   },
+  toggleInput: {
+    backgroundColor: "#fff",
+    border: "solid 1px #e3e3e3",
+  },
   searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
+    margin: theme.spacing(0, 2),
+    top: "6px",
     position: "absolute",
-    pointerEvents: "none",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: "#999",
     zIndex: "1",
+    "&:hover": {
+      color: "#000",
+    },
   },
   clearIcon: {
-    padding: theme.spacing(0, 2),
+    margin: theme.spacing(0, 2),
     right: "0",
-    height: "100%",
+    top: "5px",
     position: "absolute",
     display: "flex",
     zIndex: "1",
@@ -60,20 +68,12 @@ const useStyles = makeStyles((theme) => ({
   inputRoot: {
     color: "#000",
     width: "100%",
-    borderRadius: "4px",
-    transition: "all .1s ease-in-out",
-    border: "solid 1px #f2f2f2",
-    backgroundColor: fade(theme.palette.common.black, 0.05),
-    "&:hover": { border: "solid 1px #e3e3e3" },
-  },
-  toggleInput: {
-    border: "solid 1px #e3e3e3",
-    backgroundColor: "#fff",
+    borderRadius: "20px!important",
   },
 
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    paddingLeft: `calc(1em + ${theme.spacing(5)}px)`,
     width: "100%",
   },
 }));
@@ -122,7 +122,9 @@ const SearchBar = (props) => {
       <form
         onClick={handleClick}
         onSubmit={handleSubmit}
-        className={classes.search}
+        className={clsx(classes.form, {
+          [classes.toggleInput]: isClicked === true,
+        })}
       >
         {input && (
           <IconButton
@@ -135,9 +137,15 @@ const SearchBar = (props) => {
           </IconButton>
         )}
 
-        <div className={classes.searchIcon}>
-          <SearchIcon />
-        </div>
+        <IconButton
+          type="submit"
+          className={classes.searchIcon}
+          size="small"
+          style={{ backgroundColor: "transparent" }}
+        >
+          <SearchIcon fontSize="small" />
+        </IconButton>
+
         <InputBase
           inputRef={searchInput}
           type="text"
@@ -145,9 +153,7 @@ const SearchBar = (props) => {
           classes={{
             input: classes.inputInput,
           }}
-          className={clsx(classes.inputRoot, {
-            [classes.toggleInput]: isClicked === true,
-          })}
+          className={classes.inputRoot}
           value={input}
           onChange={handleChange}
         />
