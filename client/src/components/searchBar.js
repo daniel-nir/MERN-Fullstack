@@ -98,6 +98,8 @@ const SearchBar = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    searchInput.current.blur();
+    setIsClicked(false);
     props.history.push(`/search?q=${input}`);
   };
 
