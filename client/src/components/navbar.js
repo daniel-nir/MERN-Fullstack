@@ -45,6 +45,28 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
+  clearDrawer: {
+    color: "#444",
+    position: "absolute",
+    backgroundColor: "transparent",
+    right: "10px",
+    top: "0px",
+    "&:hover": {
+      color: "#000",
+    },
+  },
+
+  navl: {
+    color: "#555",
+    textDecoration: "none",
+    transition: ".2s",
+    "&:hover": {
+      color: "#000",
+    },
+    "&:selected": {
+      color: "#000",
+    },
+  },
 }));
 
 const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
@@ -86,13 +108,8 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
         <List>
           <ListItem style={{ padding: "0" }} key="1">
             <IconButton
-              style={{
-                color: "#000",
-                position: "absolute",
-                backgroundColor: "transparent",
-                right: "10px",
-                top: "0px",
-              }}
+              style={{ backgroundColor: "transparent" }}
+              className={classes.clearDrawer}
               aria-label="menu"
               onClick={handleDrawerToggle}
             >
@@ -267,13 +284,14 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
                 {currentUser && (
                   <div style={{ whiteSpace: "nowrap" }}>
                     <NavLink
-                      style={{
-                        textDecoration: "none",
-                        color: "#000",
-                      }}
+                      style={{ textDecoration: "none" }}
                       to={`/user-profile/${currentUser._id}`}
                     >
-                      <Button variant="text" color="inherit">
+                      <Button
+                        className={classes.navl}
+                        variant="text"
+                        style={{ backgroundColor: "transparent" }}
+                      >
                         <PersonIcon />
                         hi, {userUpdated.name || currentUser.name}
                       </Button>
@@ -281,13 +299,15 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
 
                     <NavLink
                       style={{
-                        textDecoration: "none",
-                        color: "#000",
                         marginLeft: "20px",
+                        textDecoration: "none",
                       }}
                       to="/logout"
                     >
-                      <Button>
+                      <Button
+                        style={{ backgroundColor: "transparent" }}
+                        className={classes.navl}
+                      >
                         <ExitToAppIcon />
                         logout
                       </Button>

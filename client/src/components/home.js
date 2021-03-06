@@ -3,10 +3,26 @@ import Posts from "./posts";
 import postService from "../services/postService";
 import userService from "../services/userService";
 import Loader from "react-loader-spinner";
-import { Container, Grid, Typography } from "@material-ui/core";
+import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
 import SearchInput from "./searchInput.";
 
+const useStyles = makeStyles((theme) => ({
+  h: {
+    textAlign: "left",
+    fontSmooth: "auto",
+    fontSize: "48px",
+    color: "white",
+    marginBottom: "10px",
+    fontWeight: 600,
+
+    [theme.breakpoints.down("xs")]: {
+      maxWidth: 380,
+    },
+  },
+}));
+
 const Home = ({ location, history }) => {
+  const classes = useStyles();
   const [posts, setPosts] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,29 +70,20 @@ const Home = ({ location, history }) => {
           padding: "140px 25px",
         }}
       >
-        <Grid align="center" container>
-          <Grid item xs={12}>
-            <Typography
-              style={{
-                textAlign: "center",
-                fontSmooth: "auto",
-                fontSize: "48px",
-                color: "white",
-                marginBottom: "10px",
-                fontWeight: 600,
-              }}
-              variant="h1"
-            >
+        <Grid container justify="center">
+          <Grid xs={12} align="center" item style={{ maxWidth: 870 }}>
+            <Typography className={classes.h} variant="h1">
               pixaplace
             </Typography>
             <Typography
+              className={classes.h}
               style={{
                 fontSmooth: "auto",
                 fontSize: "18px",
                 color: "white",
               }}
             >
-              Photos for and by the people. sign up to share yours!
+              photos for and by the people. sign up to share yours!
             </Typography>
           </Grid>
         </Grid>

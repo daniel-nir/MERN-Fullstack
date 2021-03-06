@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { fade, IconButton, InputBase, makeStyles } from "@material-ui/core";
+import {
+  ClickAwayListener,
+  fade,
+  IconButton,
+  InputBase,
+  makeStyles,
+} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import ClearIcon from "@material-ui/icons/Clear";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   xs_down: {
@@ -21,12 +28,9 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     color: "#555",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.black, 0.05),
     margin: "0  25px !important",
     width: "100%",
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.black, 0.07),
-    },
+
     [theme.breakpoints.down("xs")]: {
       margin: "0 15px !important",
     },
@@ -40,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     color: "#999",
+    zIndex: "1",
   },
   clearIcon: {
     padding: theme.spacing(0, 2),
@@ -55,12 +60,20 @@ const useStyles = makeStyles((theme) => ({
   inputRoot: {
     color: "#000",
     width: "100%",
+    borderRadius: "4px",
+    transition: "all .1s ease-in-out",
+    border: "solid 1px #f2f2f2",
+    backgroundColor: fade(theme.palette.common.black, 0.05),
+    "&:hover": { border: "solid 1px #e3e3e3" },
   },
+  toggleInput: {
+    border: "solid 1px #e3e3e3",
+    backgroundColor: "#fff",
+  },
+
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
     width: "100%",
   },
 }));
@@ -69,6 +82,8 @@ const SearchBar = (props) => {
   const classes = useStyles();
   const [input, setInput] = useState("");
   const [isMounted, setIsMounted] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+
   const searchInput = useRef(null);
 
   useEffect(() => {
@@ -89,39 +104,55 @@ const SearchBar = (props) => {
   const handleChange = (e) => {
     setInput(e.target.value);
   };
-  function handleClearInput() {
-    setInput("");
+  const handleClearInput = () => {
     searchInput.current.focus();
-  }
+    setInput("");
+  };
 
+  const handleClick = () => {
+    setIsClicked(true);
+  };
+  const handleClickAway = () => {
+    setIsClicked(false);
+  };
+
+  console.log(isClicked);
   return (
-    <form onSubmit={handleSubmit} className={classes.search}>
-      {input && (
-        <IconButton
-          className={classes.clearIcon}
-          style={{ backgroundColor: "transparent" }}
-          size="small"
-          onClick={handleClearInput}
-        >
-          <ClearIcon fontSize="small" />
-        </IconButton>
-      )}
+    <ClickAwayListener onClickAway={handleClickAway}>
+      <form
+        onClick={handleClick}
+        onSubmit={handleSubmit}
+        className={classes.search}
+      >
+        {input && (
+          <IconButton
+            className={classes.clearIcon}
+            style={{ backgroundColor: "transparent" }}
+            size="small"
+            onClick={handleClearInput}
+          >
+            <ClearIcon fontSize="small" />
+          </IconButton>
+        )}
 
-      <div className={classes.searchIcon}>
-        <SearchIcon />
-      </div>
-      <InputBase
-        inputRef={searchInput}
-        type="text"
-        placeholder="Search photos…"
-        classes={{
-          root: classes.inputRoot,
-          input: classes.inputInput,
-        }}
-        value={input}
-        onChange={handleChange}
-      />
-    </form>
+        <div className={classes.searchIcon}>
+          <SearchIcon />
+        </div>
+        <InputBase
+          inputRef={searchInput}
+          type="text"
+          placeholder="Search photos…"
+          classes={{
+            input: classes.inputInput,
+          }}
+          className={clsx(classes.inputRoot, {
+            [classes.toggleInput]: isClicked === true,
+          })}
+          value={input}
+          onChange={handleChange}
+        />
+      </form>
+    </ClickAwayListener>
   );
 };
 export default SearchBar;

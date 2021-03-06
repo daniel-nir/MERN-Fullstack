@@ -9,20 +9,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "25px",
     padding: "4px 8px",
     display: "flex",
-
     alignItems: "center",
     maxWidth: 850,
+    transition: "box-shadow .1s ease-in-out",
+    boxShadow: "rgba(0,0,0,0.15)",
     [theme.breakpoints.down("xs")]: {
       maxWidth: 380,
     },
+    "&:hover": { boxShadow: "0px 0px 0px 5px rgba(0,0,0,0.15)" },
   },
   input: {
     marginLeft: theme.spacing(1),
     flex: 1,
   },
   btn: {
+    color: "#aaa",
     "&:hover": {
-      color: "#333",
+      color: "#000",
     },
   },
 }));
