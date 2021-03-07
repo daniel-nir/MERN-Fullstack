@@ -26,7 +26,7 @@ router.get("/:id/user-posts", async (req, res) => {
 
 router.get("/search/:q", async (req, res) => {
   const posts = await Post.find({
-    postTags: { $regex: req.params.q, $options: "i" },
+    tags: { $regex: req.params.q, $options: "i" },
   }).sort({ _id: -1 });
   res.send(posts);
 });
@@ -56,7 +56,7 @@ router.put("/:id/update-post", auth, async (req, res) => {
 router.put("/:id/like", auth, async (req, res) => {
   let post = await Post.findOneAndUpdate(
     { _id: req.params.id },
-    { $push: { postLikes: req.user._id } }
+    { $push: { likes: req.user._id } }
   );
 
   post = await Post.findOne({ _id: req.params.id });
@@ -66,7 +66,7 @@ router.put("/:id/like", auth, async (req, res) => {
 router.put("/:id/unlike", auth, async (req, res) => {
   let post = await Post.findOneAndUpdate(
     { _id: req.params.id },
-    { $pull: { postLikes: req.user._id } }
+    { $pull: { likes: req.user._id } }
   );
 
   post = await Post.findOne({ _id: req.params.id });
@@ -91,7 +91,7 @@ router.get("/:id/post", async (req, res) => {
   res.send(post);
 });
 
-router.post("/", fileUpload.single("postImage"), auth, async (req, res) => {
+router.post("/", fileUpload.single("image"), auth, async (req, res) => {
   console.log(req.file);
   const { error } = validatePost(req.body);
   if (error) {
@@ -99,10 +99,9 @@ router.post("/", fileUpload.single("postImage"), auth, async (req, res) => {
   }
 
   let post = new Post({
-    postText: req.body.postText,
-    postImage: req.file.path.replace("\\", "/"),
-    postTags: req.body.postTags,
-    postLikes: req.body.postLikes,
+    image: req.file.path.replace("\\", "/"),
+    tags: req.body.tags,
+    likes: req.body.likes,
     postNumber: await generatePostNumber(Post),
     _user: req.user._id,
   });

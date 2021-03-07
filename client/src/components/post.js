@@ -128,7 +128,7 @@ const Post = ({ post, currentUser, history }) => {
         if (!currentUser || !post || !data) {
           return;
         }
-        const likesArray = data.postLikes;
+        const likesArray = data.likes;
         setIsLiked(likesArray.includes(currentUser._id));
       });
       if (currentUser) {
@@ -141,7 +141,7 @@ const Post = ({ post, currentUser, history }) => {
     return () => {
       setIsMounted(false);
     };
-  }, [currentUser, isMounted, post, post._id, post._user, post.postLikes]);
+  }, [currentUser, isMounted, post, post._id, post._user, post.likes]);
 
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
@@ -184,7 +184,7 @@ const Post = ({ post, currentUser, history }) => {
   const handleLike = async () => {
     const postId = post._id;
     postService.likePost(postId).then(({ data }) => {
-      const newLikes = data.postLikes;
+      const newLikes = data.likes;
       setLikes(newLikes);
       setIsLiked(true);
     });
@@ -193,7 +193,7 @@ const Post = ({ post, currentUser, history }) => {
     const postId = post._id;
     await postService.unlikePost(postId).then(({ data }) => {
       setIsLiked(false);
-      setLikes(data.postLikes);
+      setLikes(data.likes);
     });
   };
 
@@ -238,8 +238,8 @@ const Post = ({ post, currentUser, history }) => {
               display: "block",
               objectFit: "cover",
             }}
-            src={`http://localhost:3900/${post.postImage}`}
-            alt={post.postTags}
+            src={`http://localhost:3900/${post.image}`}
+            alt={post.tags}
           />
           {isShown && (
             <>
@@ -268,14 +268,14 @@ const Post = ({ post, currentUser, history }) => {
                             alignSelf: "flex-end",
                           }}
                         >
-                          {post.postTags.slice(0, 5).map((postTag, index) => (
+                          {post.tags.slice(0, 5).map((tag, index) => (
                             <Link
                               key={index}
                               className={classes.linkL}
-                              to={`/search?q=${postTag}`}
+                              to={`/search?q=${tag}`}
                               style={{ float: "left" }}
                             >
-                              {postTag}
+                              {tag}
                             </Link>
                           ))}
                         </div>
@@ -303,7 +303,7 @@ const Post = ({ post, currentUser, history }) => {
                                     variant="button"
                                     style={{ color: "#fff" }}
                                   >
-                                    {likes.length || post.postLikes.length}
+                                    {likes.length || post.likes.length}
                                   </Typography>
                                 </IconButton>
                               ) : (
@@ -321,7 +321,7 @@ const Post = ({ post, currentUser, history }) => {
                                       color: "#fff",
                                     }}
                                   >
-                                    {likes.length || post.postLikes.length}
+                                    {likes.length || post.likes.length}
                                   </Typography>
                                 </IconButton>
                               )}
@@ -359,7 +359,7 @@ const Post = ({ post, currentUser, history }) => {
                               >
                                 <FavoriteBorderIcon />
                                 <Typography variant="button">
-                                  {likes.length || post.postLikes.length}
+                                  {likes.length || post.likes.length}
                                 </Typography>
                               </IconButton>
                               <IconButton

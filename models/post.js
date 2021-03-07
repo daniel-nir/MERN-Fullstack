@@ -3,20 +3,16 @@ const mongoose = require("mongoose");
 const _ = require("lodash");
 
 const postSchema = new mongoose.Schema({
-  postText: {
-    type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 255,
-  },
-  postImage: {
+  image: {
     type: String,
     required: true,
     minlength: 8,
     maxlength: 1024,
   },
-  postLikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-  postTags: Array,
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+
+  tags: Array,
+
   createdAt: {
     type: Date,
     default: Date.now,
@@ -38,9 +34,8 @@ const Post = mongoose.model("Post", postSchema);
 
 function validatePost(post) {
   const schema = Joi.object({
-    postImage: Joi.string(),
-    postTags: Joi.array().items(Joi.string()),
-    postText: Joi.string().min(2).max(255).required(),
+    image: Joi.string().required,
+    tags: Joi.array().items(Joi.string()),
   });
   return schema.validate(post);
 }

@@ -40,11 +40,7 @@ const CreatePost = (props) => {
   }, [file]);
 
   const validationSchema = Yup.object().shape({
-    postText: Yup.string()
-      .min(2, "must be at least 2 characters")
-      .max(255)
-      .required("this field is required"),
-    postImage: Yup.mixed()
+    image: Yup.mixed()
       .required("an image is required")
       .test(
         "fileFormat",
@@ -56,7 +52,7 @@ const CreatePost = (props) => {
         "image size too large",
         (value) => value && value.size <= FILE_SIZE
       ),
-    postTags: Yup.array().of(Yup.string().required("post tag cannot be empty")),
+    tags: Yup.array().of(Yup.string().required("post tag cannot be empty")),
   });
 
   const pickedHandler = (event) => {
@@ -68,14 +64,11 @@ const CreatePost = (props) => {
   const handleSubmit = async (values) => {
     try {
       const data = new FormData();
-      data.append("postImage", values.postImage);
+      data.append("image", values.image);
 
-      values.postTags.forEach((postTag) => {
-        data.append("postTags[]", postTag);
+      values.tags.forEach((tag) => {
+        data.append("tags[]", tag);
       });
-
-      data.append("postText", values.postText);
-      console.log(values);
 
       await postService.createPost(data);
 
@@ -85,7 +78,7 @@ const CreatePost = (props) => {
   return (
     <div>
       <Formik
-        initialValues={{ postImage: "", postTags: [], postText: "" }}
+        initialValues={{ image: "", tags: [] }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
@@ -108,23 +101,6 @@ const CreatePost = (props) => {
                 style={{ marginTop: "50px" }}
                 autoComplete="off"
               >
-                <Grid item>
-                  <TextField
-                    fullWidth
-                    htmlFor="postText"
-                    variant="outlined"
-                    name="postText"
-                    label="text"
-                    type="text"
-                    value={values.postText}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    helperText={errors.postText}
-                    error={Boolean(errors.postText)}
-                  />
-                </Grid>
-
-                <br />
                 <div>
                   {previewUrl && (
                     <Zoom in={true}>
@@ -166,23 +142,23 @@ const CreatePost = (props) => {
                 <Grid item>
                   <TextField
                     fullWidth
-                    htmlFor="postImage"
+                    htmlFor="image"
                     variant="outlined"
-                    id="postImage"
+                    id="image"
                     type="file"
                     ref={filePickerRef}
-                    values={values.postImage}
+                    values={values.image}
                     onInput={pickedHandler}
                     onChange={(event) =>
-                      setFieldValue("postImage", event.target.files[0])
+                      setFieldValue("image", event.target.files[0])
                     }
-                    helperText={errors.postImage}
-                    error={Boolean(errors.postImage)}
+                    helperText={errors.image}
+                    error={Boolean(errors.image)}
                   />
                 </Grid>
                 <br />
                 <Grid item>
-                  <FieldArray name="postTags">
+                  <FieldArray name="tags">
                     {({ push, remove }) => (
                       <div>
                         <Button
@@ -192,15 +168,15 @@ const CreatePost = (props) => {
                         >
                           add tag
                         </Button>
-                        {values.postTags.map((postTag, index) => {
-                          const postTags = `postTags.${index}`;
+                        {values.tags.map((tag, index) => {
+                          const tags = `tags.${index}`;
                           return (
                             <div key={index}>
                               <Field
                                 as={TextField}
-                                placeholder="post tag"
-                                name={postTags}
-                                error={Boolean(errors.postTags)}
+                                placeholder="image tag"
+                                name={tags}
+                                error={Boolean(errors.tags)}
                                 onBlur={handleBlur}
                                 onChange={handleChange}
                               />
@@ -212,10 +188,10 @@ const CreatePost = (props) => {
                                 X
                               </Button>
 
-                              {errors.postTags ? (
+                              {errors.tags ? (
                                 <div style={{ marginRight: "65px" }}>
                                   <Typography variant="caption" color="error">
-                                    {errors.postTags[index]}
+                                    {errors.tags[index]}
                                   </Typography>
                                 </div>
                               ) : null}

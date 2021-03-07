@@ -143,7 +143,7 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
                   <ListItemIcon style={{ color: "#000" }}>
                     <PersonIcon />
                   </ListItemIcon>
-                  <ListItemText primary={`Hi, ${currentUser.name}`} />
+                  <ListItemText primary={`${currentUser.name}`} />
                 </ListItem>
               </NavLink>
               <NavLink
@@ -213,17 +213,12 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
                 }}
                 to="/"
               >
-                pixaplace
-                {/* {isMobile ? (
-                  <img
-                    style={{ marginTop: "10px" }}
-                    height="30px"
-                    src="/images/pxplogo.png"
-                    alt="pixaplace logo"
-                  />
-                ) : (
-                  "pixaplace"
-                )} */}
+                <img
+                  height="40px"
+                  style={{ marginTop: "10px" }}
+                  src="/images/logo2.svg"
+                  alt="pixaplace logo"
+                />
               </NavLink>
             </Typography>
 
@@ -293,7 +288,7 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
                         style={{ backgroundColor: "transparent" }}
                       >
                         <PersonIcon />
-                        hi, {userUpdated.name || currentUser.name}
+                        {userUpdated.name || currentUser.name}
                       </Button>
                     </NavLink>
 
