@@ -38,10 +38,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: "0",
     height: "100%",
-    backgroundColor: "transparent",
-    "&:hover": {
-      backgroundColor: "rgba(0,0,0,0.2)",
-    },
+    backgroundColor: "rgba(0,0,0,0.2)",
   },
 
   linkTop: {
@@ -79,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
     transition: ".3s",
     borderRadius: "2px!important",
-    marginLeft: "6px",
+    marginLeft: "4px",
     "&:hover": { color: "#ddd!important" },
   },
 
@@ -160,7 +157,6 @@ const Post = ({ post, currentUser, history }) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
     setOpen(false);
   };
 
@@ -241,6 +237,7 @@ const Post = ({ post, currentUser, history }) => {
             src={`http://localhost:3900/${post.image}`}
             alt={post.tags}
           />
+
           {isShown && (
             <>
               <Fade in={true}>
@@ -273,7 +270,10 @@ const Post = ({ post, currentUser, history }) => {
                               key={index}
                               className={classes.linkL}
                               to={`/search?q=${tag}`}
-                              style={{ float: "left" }}
+                              style={{
+                                float: "left",
+                                textTransform: "capitalize",
+                              }}
                             >
                               {tag}
                             </Link>
@@ -399,6 +399,7 @@ const Post = ({ post, currentUser, history }) => {
                                   color: "white",
                                   top: "8px",
                                   right: "8px",
+                                  backgroundColor: "transparent",
                                 }}
                                 aria-label="more"
                               >

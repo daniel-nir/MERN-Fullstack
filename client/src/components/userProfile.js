@@ -103,7 +103,7 @@ const UserProfile = (props) => {
       .then(({ data }) => {
         if (!data) return;
         setUserPosts(data);
-        const likesArrays = data.map((post) => post.postLikes);
+        const likesArrays = data.map((post) => post.likes);
         const likesMerged = [].concat.apply([], likesArrays);
         setTotalLikes(likesMerged);
         setIsLoading(false);
@@ -256,7 +256,11 @@ const UserProfile = (props) => {
           ) : (
             <Container maxWidth="lg">
               {userPosts.length > 0 ? (
-                <Posts currentUser={currentUser} posts={userPosts} />
+                <Posts
+                  currentUser={currentUser}
+                  posts={userPosts}
+                  history={props.history}
+                />
               ) : (
                 <Typography style={{ textAlign: "center" }}>
                   wow, thats a very clean profile!
@@ -285,7 +289,11 @@ const UserProfile = (props) => {
               {currentUser ? (
                 <Container maxWidth="lg">
                   {favPosts.length > 0 ? (
-                    <Posts currentUser={currentUser} posts={favPosts} />
+                    <Posts
+                      currentUser={currentUser}
+                      posts={favPosts}
+                      history={props.history}
+                    />
                   ) : (
                     <Typography style={{ textAlign: "center" }}>
                       no saved posts

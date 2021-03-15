@@ -214,7 +214,7 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
                 to="/"
               >
                 <img
-                  height="40px"
+                  height="30px"
                   style={{ marginTop: "10px" }}
                   src="/images/logo2.svg"
                   alt="pixaplace logo"

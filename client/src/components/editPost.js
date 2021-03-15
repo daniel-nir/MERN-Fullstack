@@ -29,29 +29,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const EditPost = (props) => {
   const [formValues, setFormValues] = useState({
-    postTags: [],
-    postText: "",
-    postImage: "",
+    tags: [],
+
+    image: "",
   });
   const [openDialog, setOpenDialog] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
 
   const validationSchema = Yup.object().shape({
     _id: Yup.string(),
-    postText: Yup.string()
-      .min(2, "must be at least 2 characters")
-      .max(255)
-      .required("this field is required"),
 
-    postTags: Yup.array().of(Yup.string().required("post tag cannot be empty")),
+    tags: Yup.array().of(Yup.string().required("post tag cannot be empty")),
   });
 
   function mapToViewModel(post) {
     return {
       _id: post._id,
-      postTags: post.postTags,
-      postText: post.postText,
-      postImage: post.postImage,
+      tags: post.tags,
+      image: post.image,
     };
   }
 
@@ -115,35 +110,18 @@ const EditPost = (props) => {
                   style={{ marginTop: "50px" }}
                   autoComplete="off"
                 >
-                  <Grid item>
-                    <TextField
-                      fullWidth
-                      htmlFor="postText"
-                      variant="outlined"
-                      id="postText"
-                      label="post text"
-                      type="text"
-                      value={values.postText}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      helperText={errors.postText}
-                      error={Boolean(errors.postText)}
-                    />
-                  </Grid>
-
-                  <br />
                   <Box
                     style={{
                       maxWidth: "340px",
                       marginBottom: "20px",
                     }}
                   >
-                    {formValues.postImage ? (
+                    {formValues.image ? (
                       <CardMedia
                         style={{ borderRadius: "5px" }}
                         component="img"
                         height="230px"
-                        src={`http://localhost:3900/${formValues.postImage}`}
+                        src={`http://localhost:3900/${formValues.image}`}
                         alt={"image preview"}
                       />
                     ) : null}
@@ -152,7 +130,7 @@ const EditPost = (props) => {
                   <br />
                   <Grid item>
                     <FieldArray
-                      name="postTags"
+                      name="tags"
                       render={(arrayHelpers) => (
                         <div>
                           <Button
@@ -162,15 +140,15 @@ const EditPost = (props) => {
                           >
                             add tag
                           </Button>
-                          {values.postTags.map((postTag, index) => {
+                          {values.tags.map((postTag, index) => {
                             return (
                               <div key={index}>
                                 <Field
                                   as={TextField}
                                   placeholder="post tag"
                                   onChange={handleChange}
-                                  name={`postTags.${index}`}
-                                  error={Boolean(errors.postTags)}
+                                  name={`tags.${index}`}
+                                  error={Boolean(errors.tags)}
                                 />
                                 <Button
                                   type="button"
@@ -180,10 +158,10 @@ const EditPost = (props) => {
                                   X
                                 </Button>
 
-                                {errors.postTags ? (
+                                {errors.tags ? (
                                   <div style={{ marginRight: "65px" }}>
                                     <Typography variant="caption" color="error">
-                                      {errors.postTags[index]}
+                                      {errors.tags[index]}
                                     </Typography>
                                   </div>
                                 ) : null}

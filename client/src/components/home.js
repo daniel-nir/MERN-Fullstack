@@ -111,7 +111,7 @@ const Home = ({ location, history }) => {
           />
         ) : (
           <Container maxWidth="lg" style={{ marginTop: "30px" }}>
-            <Posts currentUser={currentUser} posts={posts} />
+            <Posts currentUser={currentUser} posts={posts} history={history} />
           </Container>
         )}
       </div>

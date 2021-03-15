@@ -27,15 +27,15 @@ const useStyles = makeStyles((theme) => ({
   form: {
     position: "relative",
     color: "#555",
-    margin: "0  25px !important",
+    margin: "0  25px",
     width: "100%",
-    borderRadius: "20px!important",
+    borderRadius: "22px",
     border: "solid 1px #f2f2f2",
     backgroundColor: fade(theme.palette.common.black, 0.05),
     transition: "all .1s ease-in-out",
     "&:hover": { border: "solid 1px #e3e3e3" },
     [theme.breakpoints.down("xs")]: {
-      margin: "0 15px !important",
+      margin: "0 15px",
     },
   },
   toggleInput: {
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchIcon: {
     margin: theme.spacing(0, 2),
-    top: "6px",
+    top: "4px",
     position: "absolute",
     display: "flex",
     alignItems: "center",
@@ -68,11 +68,11 @@ const useStyles = makeStyles((theme) => ({
   inputRoot: {
     color: "#000",
     width: "100%",
-    borderRadius: "20px!important",
+    borderRadius: "22px",
   },
 
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
+    padding: "9px",
     paddingLeft: `calc(1em + ${theme.spacing(5)}px)`,
     width: "100%",
   },
@@ -118,7 +118,6 @@ const SearchBar = (props) => {
     setIsClicked(false);
   };
 
-  console.log(isClicked);
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <form
@@ -145,7 +144,7 @@ const SearchBar = (props) => {
           size="small"
           style={{ backgroundColor: "transparent" }}
         >
-          <SearchIcon fontSize="small" />
+          <SearchIcon fontSize="default" />
         </IconButton>
 
         <InputBase
