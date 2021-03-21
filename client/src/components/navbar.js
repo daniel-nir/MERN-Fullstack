@@ -137,7 +137,7 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
             <>
               <NavLink
                 style={{ textDecoration: "none", color: "#000" }}
-                to={`/user-profile/${currentUser._id}`}
+                to={`/users/${currentUser._id}`}
               >
                 <ListItem button key="4">
                   <ListItemIcon style={{ color: "#000" }}>
@@ -280,7 +280,7 @@ const Navbar = ({ currentUser, userUpdated, history, window, location }) => {
                   <div style={{ whiteSpace: "nowrap" }}>
                     <NavLink
                       style={{ textDecoration: "none" }}
-                      to={`/user-profile/${currentUser._id}`}
+                      to={`/users/${currentUser._id}`}
                     >
                       <Button
                         className={classes.navl}

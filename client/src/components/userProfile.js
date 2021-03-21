@@ -166,7 +166,7 @@ const UserProfile = (props) => {
                   style={{
                     textDecoration: "none",
                   }}
-                  to="/user-profile/edit"
+                  to={`/users/${currentUser._id}/edit`}
                 >
                   <Button size="small" variant="outlined">
                     edit user

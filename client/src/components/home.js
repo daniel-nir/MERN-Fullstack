@@ -4,7 +4,7 @@ import postService from "../services/postService";
 import userService from "../services/userService";
 import Loader from "react-loader-spinner";
 import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
-import SearchInput from "./searchInput.";
+import SearchHome from "./searchHome";
 
 const useStyles = makeStyles((theme) => ({
   h: {
@@ -88,7 +88,7 @@ const Home = ({ location, history }) => {
           </Grid>
         </Grid>
         <Grid align="center" item>
-          <SearchInput location={location} history={history} posts={posts} />
+          <SearchHome location={location} history={history} posts={posts} />
         </Grid>
         <Grid align="center" container>
           <Grid item xs={12}>

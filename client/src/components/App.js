@@ -52,23 +52,15 @@ const App = () => {
           <Switch>
             <ProtectedRoute
               exact
-              path="/user-profile/delete-post/:id"
+              path="/delete-post/:id"
               component={DeletePost}
             />
-            <ProtectedRoute
-              exact
-              path="/user-profile/edit-post/:id"
-              component={EditPost}
-            />
-            <ProtectedRoute
-              exact
-              path="/user-profile/edit"
-              component={EditUser}
-            />
+            <ProtectedRoute exact path="/edit-post/:id" component={EditPost} />
+            <ProtectedRoute exact path="/users/:id/edit" component={EditUser} />
 
             <ProtectedRoute exact path="/create-post" component={CreatePost} />
             <Route exact path="/search" component={Search} />
-            <Route exact path="/user-profile/:id" component={UserProfile} />
+            <Route exact path="/users/:id" component={UserProfile} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/logout" component={Logout} />
             <Route exact path="/login" component={Login} />

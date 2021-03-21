@@ -38,7 +38,7 @@ class EditUser extends Form {
 
   handleCancel = () => {
     const { data } = this.state;
-    this.props.history.replace(`/user-profile/${data._id}`);
+    this.props.history.replace(`/users/${data._id}`);
   };
 
   async doSubmit() {

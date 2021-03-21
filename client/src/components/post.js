@@ -376,7 +376,7 @@ const Post = ({ post, currentUser, history }) => {
                       </div>
                       <Link
                         className={classes.linkTop}
-                        to={`/user-profile/${post._user}`}
+                        to={`/users/${post._user}`}
                       >
                         {user.name}
                       </Link>
@@ -436,7 +436,7 @@ const Post = ({ post, currentUser, history }) => {
                         >
                           <Link
                             style={{ textDecoration: "none", color: "#333" }}
-                            to={`/user-profile/edit-post/${post._id}`}
+                            to={`/edit-post/${post._id}`}
                           >
                             <MenuItem onClick={handleClose}>
                               <EditIcon fontSize="small" /> edit
@@ -483,7 +483,7 @@ const Post = ({ post, currentUser, history }) => {
             cancel
           </Button>
           <Link
-            to={`/user-profile/delete-post/${post._id}`}
+            to={`/delete-post/${post._id}`}
             style={{ textDecoration: "none" }}
             onClick={handleClickOpen}
           >

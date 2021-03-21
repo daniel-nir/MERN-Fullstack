@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchInput = (props) => {
+const SearchHome = (props) => {
   const classes = useStyles();
   const [input, setInput] = useState("");
   const searchInput = useRef();
@@ -79,4 +79,4 @@ const SearchInput = (props) => {
     </Paper>
   );
 };
-export default SearchInput;
+export default SearchHome;

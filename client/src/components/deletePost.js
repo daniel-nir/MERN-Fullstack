@@ -9,7 +9,7 @@ const DeletePost = ({ match, history }) => {
     const postId = match.params.id;
     postService.deletePost(postId);
     toast.info("post deleted");
-    history.replace(`/user-profile/${currentUser._id}`);
+    history.replace(`/users/${currentUser._id}`);
   });
   return null;
 };

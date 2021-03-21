@@ -66,13 +66,13 @@ const EditPost = (props) => {
   }, [props.match.params.id]);
 
   const handleCancel = () => {
-    props.history.replace(`/user-profile/${currentUser._id}`);
+    props.history.replace(`/users/${currentUser._id}`);
   };
 
   const handleSubmit = async (values) => {
     await postService.setPost(values);
     toast("post updated");
-    props.history.replace(`/user-profile/${currentUser._id}`);
+    props.history.replace(`/users/${currentUser._id}`);
   };
 
   const handleClickOpen = () => {
