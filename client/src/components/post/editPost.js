@@ -18,10 +18,10 @@ import {
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { Link } from "react-router-dom";
 
-import PageHeader from "./pageHeader";
-import postService from "../services/postService";
+import PageHeader from "../pageHeader";
+import postService from "../../services/postService";
 import { toast } from "react-toastify";
-import userService from "../services/userService";
+import userService from "../../services/userService";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;

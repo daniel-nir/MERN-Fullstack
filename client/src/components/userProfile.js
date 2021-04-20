@@ -6,7 +6,7 @@ import Tab from "@material-ui/core/Tab";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import Posts from "./posts";
+import Posts from "./post/posts";
 import userService from "../services/userService";
 import postService from "../services/postService";
 import { Container, Typography } from "@material-ui/core";

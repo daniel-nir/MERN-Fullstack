@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-import postService from "../services/postService";
-import userService from "../services/userService";
+import postService from "../../services/postService";
+import userService from "../../services/userService";
 
 const DeletePost = ({ match, history }) => {
   useEffect(() => {

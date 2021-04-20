@@ -12,8 +12,8 @@ import {
   Zoom,
 } from "@material-ui/core";
 
-import PageHeader from "./pageHeader";
-import postService from "../services/postService";
+import PageHeader from "../pageHeader";
+import postService from "../../services/postService";
 
 const CreatePost = (props) => {
   const [file, setFile] = useState();

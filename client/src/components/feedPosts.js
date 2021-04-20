@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
 import React, { Component } from "react";
-import Post from "./post";
+import Post from "./post/post";
 import Loader from "react-loader-spinner";
 
 class FeedPosts extends Component {

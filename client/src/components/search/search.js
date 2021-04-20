@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Posts from "./posts";
-import postService from "../services/postService";
-import userService from "../services/userService";
+import Posts from "../post/posts";
+import postService from "../../services/postService";
+import userService from "../../services/userService";
 import Loader from "react-loader-spinner";
 import { Box, Container, Divider, Grid, Typography } from "@material-ui/core";
 

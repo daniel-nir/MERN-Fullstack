@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import Post from "./post";
+import Post from "../post/post";
 
 const Posts = ({ posts, currentUser, history }) => {
   return (

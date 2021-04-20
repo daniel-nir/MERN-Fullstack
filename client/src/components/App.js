@@ -9,14 +9,14 @@ import Signup from "./signup";
 import Login from "./login";
 import Logout from "./logout";
 import Home from "./home";
-import CreatePost from "./createPost";
+import CreatePost from "./post/createPost";
 import userService from "../services/userService";
 import ProtectedRoute from "./protectedRoute";
 import UserProfile from "./userProfile";
-import EditPost from "./editPost";
-import DeletePost from "./deletePost";
+import EditPost from "./post/editPost";
+import DeletePost from "./post/deletePost";
 import EditUser from "./editUser";
-import Search from "./search";
+import Search from "./search/search";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState("");

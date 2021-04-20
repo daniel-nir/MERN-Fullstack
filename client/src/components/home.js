@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Posts from "./posts";
+import Posts from "./post/posts";
 import postService from "../services/postService";
 import userService from "../services/userService";
 import Loader from "react-loader-spinner";
 import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
-import SearchHome from "./searchHome";
+import SearchHome from "./search/searchHome";
 
 const useStyles = makeStyles((theme) => ({
   h: {
