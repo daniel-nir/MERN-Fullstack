@@ -1,5 +1,5 @@
 module.exports = {
-  mongoURI: "put here your mongo URI",
+  mongoURI: "place your mongo URI here",
   redirectDomain: "http://localhost:3000",
-  jwtKey: "yourmamaisnicetome",
+  jwtKey: "kljn3490834fedf",
 };
