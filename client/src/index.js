@@ -4,9 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import "jquery/dist/jquery";
 import App from "./components/App";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import { disableReactDevTools } from "@fvilers/disable-react-devtools";
-
-if (process.env.NODE_ENV === "production") disableReactDevTools();
 
 const theme = createMuiTheme({
   props: {
