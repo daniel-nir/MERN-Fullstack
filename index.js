@@ -40,5 +40,5 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-const PORT = process.env.PORT || 3900;
+const PORT = process.env.PORT || "https://whimsical-heliotrope-ac72e9.netlify.app";
 app.listen(PORT);
