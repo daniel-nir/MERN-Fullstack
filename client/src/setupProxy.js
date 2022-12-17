@@ -3,7 +3,8 @@ module.exports = function (app) {
   app.use(
     ["/api"],
     createProxyMiddleware({
-      target: "https://react-final-project.onrender.com",
+      target: "https://whimsical-heliotrope-ac72e9.netlify.app",
+      
     })
   );
 };
