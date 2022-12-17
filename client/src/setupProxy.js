@@ -3,7 +3,7 @@ module.exports = function (app) {
   app.use(
     ["/api"],
     createProxyMiddleware({
-      target: "http://localhost:3900",
+      target: "https://react-final-project.onrender.com",
     })
   );
 };

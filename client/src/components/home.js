@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Posts from "./post/posts";
+import Posts from "./posts/posts";
 import postService from "../services/postService";
 import userService from "../services/userService";
 import Loader from "react-loader-spinner";
 import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
-import SearchHome from "./search/searchHome";
+import SearchHome from "./searches/searchHome";
 
 const useStyles = makeStyles((theme) => ({
   h: {
@@ -73,7 +73,7 @@ const Home = ({ location, history }) => {
         <Grid container justify="center">
           <Grid xs={12} align="center" item style={{ maxWidth: 870 }}>
             <Typography className={classes.h} variant="h1">
-              pixaplace
+              Pixaplace
             </Typography>
             <Typography
               className={classes.h}
@@ -83,7 +83,8 @@ const Home = ({ location, history }) => {
                 color: "white",
               }}
             >
-              photos for and by the people. sign up to share yours!
+              Photos for and by the web. <br />
+              Sign up to share yours!
             </Typography>
           </Grid>
         </Grid>
@@ -93,7 +94,7 @@ const Home = ({ location, history }) => {
         <Grid align="center" container>
           <Grid item xs={12}>
             <Typography style={{ margin: "25px", color: "#efefef" }}>
-              example app
+              EXAMPLE APP
             </Typography>
           </Grid>
         </Grid>

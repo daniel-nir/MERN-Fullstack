@@ -25,7 +25,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import SearchBar from "./search/searchBar";
+import SearchBar from "./searches/searchBar";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

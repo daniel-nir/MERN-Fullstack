@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Posts from "../post/posts";
+import Posts from "../posts/posts";
 import postService from "../../services/postService";
 import userService from "../../services/userService";
 import Loader from "react-loader-spinner";
